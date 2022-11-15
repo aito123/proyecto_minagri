@@ -1,0 +1,101 @@
+---
+title: "Mosaico La Libertad"
+author: "Santiago Sotelo"
+date: today
+date-format: long
+format: html
+lang: es
+params:
+  raster: "la_libertad/imagenes/PLANET_IR572-983.tif"
+---
+
+```{r}
+#| output: false
+# execute:
+#   echo: false
+#   message: false
+#   warning: false
+
+pacman::p_load(haven, tidyverse, janitor, glue, sf, raster, stars, fasterize, here, gt, kableExtra, fs)
+here::i_am("la_libertad.qmd")
+
+```
+
+## Problema
+
+1. Cortar el shapefile `lotesm_1` a cada cuadrante.
+1. Convertir cada nuevo shapefile en un ráster utilizando la variable `USO_LOT`.
+    i) Anchura 1958 px
+    i) Altura 1943 px
+    i) Unidades tamaño del ráster de salida: Píxeles
+    i) Tipo de datos de salida: byte
+1. Guardar los ráster en un archivo `.tiff`
+    i) Descartar los cuadrantes que no tienen polígonos de `lotesm_1` dentro.
+
+
+```{r}
+#| label: import raster
+
+myraster<-raster(here::here(glue(params$raster)))
+
+```
+
+```{r}
+#| label: import CAPITULO_4A
+#| eval: false
+
+cap4a<- rio::import(here("data/data_tabular_ena/CAPITULO_4A.xlsx")) %>% 
+  mutate(ORDEN_LOTE = as.character(ORDEN_LOTE),
+         ORDEN_LOTE = str_pad(ORDEN_LOTE, 2, side = "left", pad = "0"),
+         ID_LOTE = str_c(ID_POLI, ORDEN_LOTE)) %>% # problema con 00
+  dplyr::select(ID_LOTE, P401, P402, P403_MES, P403_ANIO)
+  
+```
+
+```{r}
+#| label: import shapefile
+
+myshp<-st_read(here("data/lotesm_1/lotesm_1.shp"), quiet = TRUE) %>%  # todos los puntos
+  # left_join(cap4a, by = "ID_LOTE") %>% 
+  dplyr::select(USO_LOT, geometry) # seleccionar las variables que nos importan
+
+```
+
+```{r}
+#| label: subset valores dentro del Raster
+
+myshp2<-st_crop(myshp, myraster) # subset funciona con RasterLayer y stars obj
+
+```
+
+El siguiente loop evita que los ráster que no tienen polígonos dentro se exporten.
+
+```{r}
+#| label: rasterizar el sf obj (poligono) y exportar tif cropeado
+
+if (nrow(myshp2) == 0){
+
+  print("El raster no tiene polígonos dentro.")
+
+} else {
+  
+  file_name<- str_split(params$raster, pattern = "[/_IR]", simplify = TRUE)[,7]
+  
+  rasterlayer <-
+    fasterize(st_cast(myshp2, "MULTIPOLYGON"),
+              raster = myraster,
+              field = "USO_LOT") # para RasterLayer
+  
+  # para RasterLayer
+  writeRaster(
+    rasterlayer,
+    filename = here::here(glue("la_libertad/labels/", file_name)),
+    format = "GTiff",
+    datatype = 'INT1U',
+    options = c("COMPRESS=NONE"),
+    overwrite = TRUE
+  )
+  
+}
+
+```

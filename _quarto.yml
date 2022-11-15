@@ -1,0 +1,23 @@
+project:
+  type: website
+lang: es
+execute:
+  freeze: auto  # re-render only when source changes
+
+website:
+  title: "Proyecto MIDAGRI"
+  navbar:
+    background: primary
+    right:
+      - href: index.qmd
+        text: "Home"
+      - text: "Menu"
+        menu:
+          - proyecto_minagri.qmd
+          - cap4a.qmd
+
+format:
+  html:
+    theme: 
+      light: Litera
+    toc: true

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Santiago Sotelo">
+
+<title>Proyecto MIDAGRI - Revisión base CAPITULO_4A</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Sín resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la busqueda",
+    "search-hide-matches-text": "Esconder resultados adicionales",
+    "search-more-match-text": "hay más resultados en este documento",
+    "search-more-matches-text": "más resultados en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Eviar"
+  }
+}</script>
+
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Proyecto MIDAGRI</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Home</a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-menu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-menu">    
+        <li>
+    <a class="dropdown-item" href="./proyecto_minagri.html">
+ <span class="dropdown-text">Reporte MIDAGRI</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./cap4a.html">
+ <span class="dropdown-text">Revisión base CAPITULO_4A</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">En esta página</h2>
+   
+  <ul>
+  <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo">Objetivo</a></li>
+  <li><a href="#revisión-base-polígonos" id="toc-revisión-base-polígonos" class="nav-link" data-scroll-target="#revisión-base-polígonos">Revisión base polígonos</a></li>
+  <li><a href="#revisión-base-tabular" id="toc-revisión-base-tabular" class="nav-link" data-scroll-target="#revisión-base-tabular">Revisión base tabular</a></li>
+  <li><a href="#unión-de-las-bases" id="toc-unión-de-las-bases" class="nav-link" data-scroll-target="#unión-de-las-bases">Unión de las bases</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Revisión base CAPITULO_4A</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>Santiago Sotelo </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Fecha de Publicación</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">15 de noviembre de 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="objetivo" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo">Objetivo</h2>
+<p>Realizar la unión de la selección base polígonos <code>QLAB_MIDAGRI_1.gdb (lotesm 1)</code> y la base tabular <code>CAPITULO_4A.xlsx</code> .</p>
+</section>
+<section id="revisión-base-polígonos" class="level2">
+<h2 class="anchored" data-anchor-id="revisión-base-polígonos">Revisión base polígonos</h2>
+<div class="cell">
+
+</div>
+<ul>
+<li><p>La base polígonos tiene 1903 observaciones y 27 variables.</p></li>
+<li><p>Esta base solo incluye los cultivos de interés: papa, maíz, palto (palta), espárrago y caña de azúcar.</p></li>
+<li><p>La unidad de análisis en esta base son los lotes de cada parcela a la fecha <em>noviembre 2021</em>.</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-shp" class="anchored">
+
+<table class="table" style="margin-left: auto; margin-right: auto;"><caption>Tabla 1:  Número de casos por tipo de sembrío de La Libertad en base polígonos </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> uso_lt1 </th>
+   <th style="text-align:right;"> Nro de casos en data </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 741 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 444 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 327 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Esparrago </td>
+   <td style="text-align:right;"> 252 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caña de azucar </td>
+   <td style="text-align:right;"> 139 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-style: italic;"> Total </td>
+   <td style="text-align:right;font-style: italic;"> 1903 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>En un mapa se pueden graficar de la siguiente manera.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-shp" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cap4a_files/figure-html/fig-shp-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figura 1: Mapa de la base polígonos</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="revisión-base-tabular" class="level2">
+<h2 class="anchored" data-anchor-id="revisión-base-tabular">Revisión base tabular</h2>
+<div class="cell">
+
+</div>
+<ul>
+<li><p>La base tabular tiene 9916 observaciones y 179 variables.</p></li>
+<li><p>Se encuentran 56 casos duplicados en esta base de datos los cuales se filtrarán.</p></li>
+<li><p>De esta base solo seleccionaremos los cultivos de interés. Aplicando la selección, el número de observaciones se reduce a 3763.</p></li>
+<li><p>La unidad de análisis de la base tabular son los lotes de cada parcela en distintos momentos, por ello se incluye una variable que especifica si la información es acerca del <em>pasado, presente o futuro</em>.</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-tabular" class="anchored">
+
+<table class="table" style="margin-left: auto; margin-right: auto;"><caption>Tabla 2:  Número de casos por tipo de sembrío según temporalidad de La Libertad en base tabular </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> P402_PADRE </th>
+   <th style="text-align:right;"> PASADO </th>
+   <th style="text-align:right;"> PRESENTE </th>
+   <th style="text-align:right;"> FUTURO </th>
+   <th style="text-align:right;"> Total </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> PAPA </td>
+   <td style="text-align:right;"> 754 </td>
+   <td style="text-align:right;"> 709 </td>
+   <td style="text-align:right;"> 169 </td>
+   <td style="text-align:right;"> 1632 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MAIZ AMARILLO </td>
+   <td style="text-align:right;"> 416 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 92 </td>
+   <td style="text-align:right;"> 748 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MAIZ AMILACEO </td>
+   <td style="text-align:right;"> 262 </td>
+   <td style="text-align:right;"> 141 </td>
+   <td style="text-align:right;"> 86 </td>
+   <td style="text-align:right;"> 489 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PALTA </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 346 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:right;"> 364 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CAÑA DE AZÚCAR (PARA AZUCAR) </td>
+   <td style="text-align:right;"> 54 </td>
+   <td style="text-align:right;"> 119 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 186 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ESPÁRRAGO </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 152 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 174 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MAIZ MORADO </td>
+   <td style="text-align:right;"> 39 </td>
+   <td style="text-align:right;"> 23 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MAIZ CHALA </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 55 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MAIZ CHOCLO </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CAÑA DE AZÚCAR (PARA FRUTA) </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CAÑA DE AZÚCAR (PARA ALCOHOL) </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CAÑA DE AZÚCAR (PARA CHANCACA) </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-style: italic;"> Total </td>
+   <td style="text-align:right;font-style: italic;"> 1595 </td>
+   <td style="text-align:right;font-style: italic;"> 1766 </td>
+   <td style="text-align:right;font-style: italic;"> 402 </td>
+   <td style="text-align:right;font-style: italic;"> 3763 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Respecto a la antigüedad de los datos presentes en la base tabular tenemos que el año más antiguo en la selección data de 1965.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-tabular2" class="anchored">
+
+<table class="table" style="margin-left: auto; margin-right: auto;"><caption>Tabla 3:  Antigüedad de las observaciones en la base tabular </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> P403_ANIO </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> [1965,2020) </td>
+   <td style="text-align:right;"> 767 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2020 </td>
+   <td style="text-align:right;"> 1091 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2021 </td>
+   <td style="text-align:right;"> 1846 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2022 </td>
+   <td style="text-align:right;"> 59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-style: italic;"> Total </td>
+   <td style="text-align:right;font-style: italic;"> 3763 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="unión-de-las-bases" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="unión-de-las-bases">Unión de las bases</h2>
+<div class="cell">
+
+</div>
+<p>Al momento de unir las bases, es oportuno considerar que la base polígonos tiene la información sobre los lotes en el presente (nov 2021) y la base tabular tiene información sobre los lotes en el pasado, presente y futuro. Asimismo, se tienen las siguientes observaciones:</p>
+<ul>
+<li><p>No todas las observaciones de la base polígonos fueron encontradas en la base tabular, 282 casos no se unieron. Sin embargo, se preservarán estos casos y se considerarán como cultivos en el PRESENTE, en el mes de noviembre, 2021.</p></li>
+<li><p>No todas las observaciones de la base tabular fueron encontradas en la base tabular, 1638 casos no se unieron. Estos casos no se preservarán.</p></li>
+<li><p>Los casos que se unieron satisfactoriamente en la base tabular fueron 2125 observaciones. Sumado a los 282 casos sobrantes de la base poligonal tenemos un total de 2407 observaciones en la base final unida.</p></li>
+</ul>
+<p>De los 2407 casos se tiene lo siguiente:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-join" class="anchored">
+
+<table class="table" style="margin-left: auto; margin-right: auto;"><caption>Tabla 4:  Temporalidad de los lotes de la base unida </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> P401 </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> FUTURO </td>
+   <td style="text-align:right;"> 47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PASADO </td>
+   <td style="text-align:right;"> 520 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PRESENTE </td>
+   <td style="text-align:right;"> 1840 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-style: italic;"> Total </td>
+   <td style="text-align:right;font-style: italic;"> 2407 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>La <a href="#tbl-join">Tabla&nbsp;4</a> muestra que se tiene 1840 observaciones en el presente, lo cual es un 76% de las observaciones totales de la base unida. Asimismo, si quisiéramos saber cuáles son los casos que tienen máximo una antigüedad de tres meses desde que se realizó la encuesta, es decir considerar casos hasta setiembre de 2021, tendríamos lo siguiente:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-join2" class="anchored">
+
+<table class="table" style="margin-left: auto; margin-right: auto;"><caption>Tabla 5:  Antigüedad por año según que tan reciente son los casos en la base unida </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> P403_ANIO </th>
+   <th style="text-align:right;"> No reciente </th>
+   <th style="text-align:right;"> Reciente </th>
+   <th style="text-align:right;"> Total </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> [1965,2021) </td>
+   <td style="text-align:right;"> 922 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 922 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2021 </td>
+   <td style="text-align:right;"> 785 </td>
+   <td style="text-align:right;"> 686 </td>
+   <td style="text-align:right;"> 1471 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2022 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 14 </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-style: italic;"> Total </td>
+   <td style="text-align:right;font-style: italic;"> 1707 </td>
+   <td style="text-align:right;font-style: italic;"> 700 </td>
+   <td style="text-align:right;font-style: italic;"> 2407 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>En la <a href="#tbl-join2">Tabla&nbsp;5</a> podemos observar que la totalidad de valores antes del 2021 son considerados como no recientes. Dentro del 2021, únicamente las observaciones capturadas a partir de setiembre de 2021 son consideradas como recientes lo que nos da un total de 686 observaciones. Las observaciones que se encuentran en 2022, o en el futuro de la encuesta, son también consideradas como recientes, es decir, 14 observaciones.</p>
+<p>Si graficamos la base unida según temporalidad podemos ver lo siguiente en comparación con la base polígono original:</p>
+<div id="fig-join" class="cell column-screen-inset quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 33.3%;justify-content: center;">
+<div id="fig-join-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cap4a_files/figure-html/fig-join-1.png" class="img-fluid figure-img" data-ref-parent="fig-join" width="672"></p>
+<p></p><figcaption class="figure-caption">(a) En el pasado</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 33.3%;justify-content: center;">
+<div id="fig-join-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cap4a_files/figure-html/fig-join-2.png" class="img-fluid figure-img" data-ref-parent="fig-join" width="672"></p>
+<p></p><figcaption class="figure-caption">(b) En el presente</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 33.3%;justify-content: center;">
+<div id="fig-join-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cap4a_files/figure-html/fig-join-3.png" class="img-fluid figure-img" data-ref-parent="fig-join" width="672"></p>
+<p></p><figcaption class="figure-caption">(c) En el futuro</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figura 2: Mapa de la base tabular encima de la base polígonos</figcaption><p></p>
+</figure>
+</div>
+<div class="cell">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

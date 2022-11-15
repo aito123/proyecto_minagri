@@ -1,0 +1,127 @@
+Si lo graficamos en un mapa encima de la base polígono podemos ver el siguiente resultado.
+
+{r}
+
+# cap4a %>% 
+#   mutate(
+#     duplicados = duplicated(.),
+#     duplicados_last = duplicated(., fromLast = TRUE),
+#     ) %>% 
+#   filter(duplicados %in% "TRUE" | duplicados_last %in% "TRUE") %>% 
+#   arrange(ID_LOTE, ID_PARC, NRO_LOT, P401)
+
+cap4a_1<-
+  cap4a %>% 
+  distinct(.keep_all = TRUE)
+
+
+Observaciones base CAPITULO_4A:
+
+9916 observaciones y 7 variables en total.
+
+56 filas duplicadas
+
+En la base tabular CAPITULO_4A existen NRO_LOT == 00 lo cual no figura en la base shapefile lotesm_1.
+
+Luego de conservar los casos únicos se tienen 9860 observaciones.
+
+Luego de filtrar productos de interés tenemos 3798 observaciones.
+
+{r}
+cap4a %>% 
+  count(P402_PADRE) %>% 
+  janitor::adorn_totals("row") %>% 
+  gt::gt()
+
+{r}
+#| eval: false
+
+myshp<-st_read(here("data/lotesm_1/lotesm_1.shp"), quiet = TRUE) %>%  # todos los puntos
+  full_join(cap4a, by = "ID_LOTE")
+
+
+{r}
+#| eval: false
+
+myshp2<-st_read(here("data/lotesm_1/lotesm_1.shp"), quiet = TRUE) %>%  # todos los puntos
+  full_join(cap4a, by = c("ID_PARC", "NRO_LOT")) 
+
+
+Observaciones al hacer la unión de las bases:
+
+La base que prima es CAPITULO_4A dado que cuenta con información de múltiples años. Además se repiten las parcelas dado que algunas son del pasado, otras del presente, y otras del futuro.
+
+Existen cultivos de la base tabular que no calzan con los objetos shapefiles que se tienen.
+
+{r}
+#| label: import shapefile
+
+lotesm<-st_read(here("data/lotesm_1/lotesm_1.shp"), quiet = TRUE) %>% 
+  as.data.frame()
+
+provincias<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "Provincias", quiet=TRUE)
+
+
+{r}
+#| label: unión
+
+data_j<- 
+  full_join(cap4a_1 %>% dplyr::select(-ID_LOTE), lotesm, by = c("ID_PARC", "NRO_LOT")) %>% 
+  filter(!is.na(GEOCODI))
+
+
+{r}
+#| label: fig-plots
+#| layout-ncol: 2
+#| column: body-outset
+#| fig-cap: Ploteo de momentos
+#| fig-subcap: 
+#| - PASADO
+#| - PRESENTE
+#| - FUTURO
+#| - TODOS LOS POLÍGONOS LOTESM 1
+
+data_j %>% 
+  filter(P401 %in% "PASADO") %>% 
+  ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(aes(geometry=geometry), fill = "magenta", color = "magenta") + 
+  theme_void() +
+  theme(plot.background = element_rect(fill = "#FFFF9F"))
+
+data_j %>% 
+  filter(P401 %in% "PRESENTE") %>% 
+  ggplot() +
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(aes(geometry=geometry), fill = "blue", color = "blue") + 
+  theme_void() +
+  theme(plot.background = element_rect(fill = "#FFFF9F"))
+
+data_j %>% 
+  filter(P401 %in% "FUTURO") %>% 
+  ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(aes(geometry=geometry), fill = "RED", color = "RED") + 
+  theme_void() +
+  theme(plot.background = element_rect(fill = "#FFFF9F"))
+
+
+lotesm %>% 
+  ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(aes(geometry=geometry), fill = "magenta", color = "magenta") + 
+  theme_void() +
+  theme(plot.background = element_rect(fill = "#FFFF9F"))
+
+
+{r}
+#| eval: false
+
+data_j %>% 
+  mutate(geometry_empty = st_is_empty(geometry)) %>% 
+  dplyr::group_by(ID_PARC, NRO_LOT, P401, geometry_empty) %>% 
+  dplyr::summarise(n=n()) %>%
+  ungroup() %>% 
+  filter(geometry_empty %in% "FALSE", P401 %in% "PRESENTE") %>% 
+  data.table::data.table()
+

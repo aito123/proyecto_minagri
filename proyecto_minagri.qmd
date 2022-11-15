@@ -1,0 +1,331 @@
+---
+title: "Reporte MIDAGRI"
+author: "Santiago Sotelo"
+date: today
+date-format: long
+format: html
+execute:
+  echo: false
+  message: false
+  warning: false
+df-print: kable
+lang: es
+
+---
+
+```{=html}
+<style type="text/css">
+caption, .table-caption {
+  text-align: left;
+}
+</style>
+```
+
+**Objetivo**: Se realizará una exploración de la base de datos del MIDAGRI. Luego se exportará la base de datos que solo incluya los sembríos de espárrago, palto, maíz, caña de azúcar y papa.
+
+```{r}
+#| output: false
+
+pacman::p_load(haven, tidyverse, janitor, sf, here, gt, kableExtra)
+here::i_am("proyecto_minagri.qmd")
+options(width = 300)
+
+```
+
+## Importar data
+
+Layers disponibles en la carpeta `QLAB_MIDAGRI_1.gdb`:
+
+```{r}
+#| column: screen-right
+
+sf::st_layers(here::here("data/QLAB_MIDAGRI_1.gdb")) 
+  
+
+```
+
+## Plot Layers
+
+```{r}
+#| label: importar layers por separado
+#| warning: false
+
+parcelasmi<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "ParcelaSMI", quiet=TRUE) 
+parcelasm<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "ParcelaSM", quiet=TRUE)
+lotesm<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "LoteSM", quiet=TRUE)
+centropoblado<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "CentroPoblado", quiet=TRUE)
+cobertura_a<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "CoberturaA", quiet=TRUE)
+distritos<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "Distritos", quiet=TRUE)
+pisos_a<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "PisosA", quiet=TRUE)
+hidrografia<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "Hidrografia", quiet=TRUE)
+vias<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "Vias", quiet=TRUE)
+sectoresmma<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "SectorEsMMA", quiet=TRUE)
+provincias<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "Provincias", quiet=TRUE)
+regiones<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "Regiones", quiet=TRUE)
+sede_a<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "SedeA", quiet=TRUE)
+marcoarea<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "MARCOAREA_LA_LIBERTAD_ac", quiet=TRUE)
+marcolistaempresa<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "MARCOLISTAEMPRESA_LA_LIBERTAD_ac", quiet=TRUE)
+marcolistaencuesta<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "MARCOLISTAENCUESTA_LA_LIBERTAD", quiet=TRUE)
+marcolistauso<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "MARCOLISTAUSO_LA_LIBERTAD", quiet=TRUE)
+
+```
+
+```{r}
+#| label: fig-plot
+#| layout-ncol: 5
+#| column: body-outset
+#| fig-cap: Ploteo de layers de `QLAB_MIDAGRI_1.gdb`
+#| fig-subcap: 
+#| - ParcelaSMI
+#| - ParcelaSM
+#| - LoteSM
+#| - CentroPoblado
+#| - CoberturaA
+#| - Distritos
+#| - PisosA
+#| - Hidrografia
+#| - Vias
+#| - SectorEsMMA
+#| - Provincias
+#| - Regiones
+#| - SedeA
+#| - MARCOAREA...
+#| - MARCOLISTAEMP...
+#| - MARCOLISTAENC...
+#| - MARCOLISTAUSO...
+
+parcelasmi %>% ggplot() + geom_sf() + theme_void()
+parcelasm %>% ggplot() + geom_sf() + theme_void()
+lotesm %>% ggplot() + geom_sf() + theme_void()
+centropoblado %>% ggplot() + geom_sf() + theme_void()
+cobertura_a %>% ggplot() + geom_sf() + theme_void()
+distritos %>% ggplot() + geom_sf() + theme_void()
+pisos_a %>% ggplot() + geom_sf() + theme_void()
+hidrografia %>% ggplot() + geom_sf() + theme_void()
+vias %>% ggplot() + geom_sf() + theme_void()
+sectoresmma %>% ggplot() + geom_sf() + theme_void()
+provincias %>% ggplot() + geom_sf() + theme_void()
+regiones %>% ggplot() + geom_sf() + theme_void()
+sede_a %>% ggplot() + geom_sf() + theme_void()
+marcoarea %>% ggplot() + geom_sf() + theme_void()
+marcolistaempresa %>% ggplot() + geom_sf() + theme_void()
+marcolistaencuesta %>% ggplot() + geom_sf() + theme_void()
+marcolistauso %>% ggplot() + geom_sf() + theme_void()
+
+```
+
+## Cálculo de área por cultivo.
+
+Para realizar este cálculo necesitamos el layer `LoteSM`:
+
+```{r}
+#| label: tbl-filas
+#| tbl-cap: Primeras 5 filas del layer `LoteSM`
+
+lotesm %>% 
+  head(5) %>% 
+  knitr::kable()
+  
+```
+
+En particular las variables:
+
+- `NOMPROV`: Nombre de la provincia
+- `USO_LOTE`: Tipo de uso y cobertura de la tierra (papa, palta, pastos cultivados y otros usos que no sean cultivos (infraestructuras, cuerpos de agua, eriazos, formaciones rocosas etc…), P_301a. 100 Opciones. Selección única.
+- `AREA_LOTE`: Área del Lote en hectáreas (Calcular en Zona 18).
+
+:::{.callout-tip collapse=true appearance='default' icon=true}
+## Tipos de uso del lote como se definen en el `DICCIONARIO_MMM_18_11_2021.xlsx`
+
+| Variable     | Categorías                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| CULTIVO_LOTE | 1.  kiwicha, o   amaranto<br>     2. Aji<br>     3. Ajo<br>     4. Alcachofa<br>     5. Alfalfa<br>     6. Algodon<br>     7. Arandanos<br>     8. Arroz<br>     9. Arverja<br>     10. Avena<br>     11. Banano<br>     12. Cacao<br>     13. Cafe<br>     14. Camerun<br>     15. Camote<br>     16. Capuli<br>     17. Cebada  <br>     18. Cebolla<br>     19. Cerezo<br>     20. Chia (Salvia Hispanica)<br>     21. Chiromoya<br>     22. Chocho o Tarwi<br>     23. Ciruelo<br>     24. Col o repollo <br>     25. Culantro <br>     26. Esparrago<br>     27. Frijol<br>     28. Garbanzo<br>     29. Granadilla<br>     30. Granado<br>     31. Guanabano<br>     32. Guayabo<br>     33. Haba<br>     34. Higuera<br>     35. Lechuga<br>     36. Lenteja<br>     37. Lima<br>     38. Limon<br>     39. Linaza<br>     40. Lucuma<br>     41. Maíz<br>     42. Mamey<br>     43. Mandarina<br>     44. Mango<br>     45. Mani<br>     46. Manzano<br>     47. Maracuya<br>     48. Marigold<br>     49. Mashua o izano<br>     50. Melocotonero<br>     51. Melon <br>     52. Membrillo<br>     53. Naranjo<br>     54. Ñuña<br>     55. Oca<br>     56. Olivo<br>     57. Olluco<br>     58. Pacae o guabo<br>     59. Pallar <br>     60. Palto<br>     61. Papa<br>     62. Papikra<br>     63. Otros Pastos Cultivados<br>     64. Pecano<br>     65. Pepinillo<br>     66. Pepino<br>     67. Pimiento<br>     68. Piña<br>     69. Piquillo<br>     70. Pitahaya<br>     71. Platano<br>     72. Quinua<br>     73. Rabano<br>     74. Sandia<br>     75. Sorgo<br>     76. Tara<br>     77. Tomate<br>     78. Trigo<br>     79. Tumbo<br>     80. Tuna <br>     81. Vid<br>     82. Yuca<br>     83. Zanahoria<br>     84. Zapallo<br>     85. Zarandaja<br>     86. Caña de azucar<br>     87. Cuerpos de agua<br>     88. Cultivos Ilícitos<br>     89. Eriazos<br>     90. Infraestructura Agrícola<br>     91. Inraestructura Pecuaria<br>     92. Montes y Bosques<br>     93. Otros Cultivos Permanentes<br>     94. Otros Cultivos Transitorios<br>     95. Otros Usos de la Tierra<br>     96. Plantaciones Forestales<br>     97. Tierras con Pastos Naturales<br>     98. Tierras en Barbecho.<br>     99. Tierras en descanso<br>     100. Vergel<br>      |
+
+:::
+
+Tabulación cruzada por sembrío:
+
+```{r}
+lotesm_1<-
+  lotesm %>% 
+  mutate(
+   uso_lote1=case_when(
+     USO_LOTE == 1 ~ 'kiwicha, o amaranto',
+     USO_LOTE == 2 ~ 'Aji',
+     USO_LOTE == 3 ~ 'Ajo',
+     USO_LOTE == 4 ~ 'Alcachofa',
+     USO_LOTE == 5 ~ 'Alfalfa',
+     USO_LOTE == 6 ~ 'Algodon',
+     USO_LOTE == 7 ~ 'Arandanos',
+     USO_LOTE == 8 ~ 'Arroz',
+     USO_LOTE == 9 ~ 'Arverja',
+     USO_LOTE == 10 ~ 'Avena',
+     USO_LOTE == 11 ~ 'Banano',
+     USO_LOTE == 12 ~ 'Cacao',
+     USO_LOTE == 13 ~ 'Cafe',
+     USO_LOTE == 14 ~ 'Camerun',
+     USO_LOTE == 15 ~ 'Camote',
+     USO_LOTE == 16 ~ 'Capuli',
+     USO_LOTE == 17 ~ 'Cebada',
+     USO_LOTE == 18 ~ 'Cebolla',
+     USO_LOTE == 19 ~ 'Cerezo',
+     USO_LOTE == 20 ~ 'Chia (Salvia Hispanica)',
+     USO_LOTE == 21 ~ 'Chiromoya',
+     USO_LOTE == 22 ~ 'Chocho o Tarwi',
+     USO_LOTE == 23 ~ 'Ciruelo',
+     USO_LOTE == 24 ~ 'Col o repollo',
+     USO_LOTE == 25 ~ 'Culantro',
+     USO_LOTE == 26 ~ 'Esparrago',
+     USO_LOTE == 27 ~ 'Frijol',
+     USO_LOTE == 28 ~ 'Garbanzo',
+     USO_LOTE == 29 ~ 'Granadilla',
+     USO_LOTE == 30 ~ 'Granado',
+     USO_LOTE == 31 ~ 'Guanabano',
+     USO_LOTE == 32 ~ 'Guayabo',
+     USO_LOTE == 33 ~ 'Haba',
+     USO_LOTE == 34 ~ 'Higuera',
+     USO_LOTE == 35 ~ 'Lechuga',
+     USO_LOTE == 36 ~ 'Lenteja',
+     USO_LOTE == 37 ~ 'Lima',
+     USO_LOTE == 38 ~ 'Limon',
+     USO_LOTE == 39 ~ 'Linaza',
+     USO_LOTE == 40 ~ 'Lucuma',
+     USO_LOTE == 41 ~ 'Maíz',
+     USO_LOTE == 42 ~ 'Mamey',
+     USO_LOTE == 43 ~ 'Mandarina',
+     USO_LOTE == 44 ~ 'Mango',
+     USO_LOTE == 45 ~ 'Mani',
+     USO_LOTE == 46 ~ 'Manzano',
+     USO_LOTE == 47 ~ 'Maracuya',
+     USO_LOTE == 48 ~ 'Marigold',
+     USO_LOTE == 49 ~ 'Mashua o izano',
+     USO_LOTE == 50 ~ 'Melocotonero',
+     USO_LOTE == 51 ~ 'Melon',
+     USO_LOTE == 52 ~ 'Membrillo',
+     USO_LOTE == 53 ~ 'Naranjo',
+     USO_LOTE == 54 ~ 'Ñuña',
+     USO_LOTE == 55 ~ 'Oca',
+     USO_LOTE == 56 ~ 'Olivo',
+     USO_LOTE == 57 ~ 'Olluco',
+     USO_LOTE == 58 ~ 'Pacae o guabo',
+     USO_LOTE == 59 ~ 'Pallar',
+     USO_LOTE == 60 ~ 'Palto',
+     USO_LOTE == 61 ~ 'Papa',
+     USO_LOTE == 62 ~ 'Papikra',
+     USO_LOTE == 63 ~ 'Otros Pastos Cultivados',
+     USO_LOTE == 64 ~ 'Pecano',
+     USO_LOTE == 65 ~ 'Pepinillo',
+     USO_LOTE == 66 ~ 'Pepino',
+     USO_LOTE == 67 ~ 'Pimiento',
+     USO_LOTE == 68 ~ 'Piña',
+     USO_LOTE == 69 ~ 'Piquillo',
+     USO_LOTE == 70 ~ 'Pitahaya',
+     USO_LOTE == 71 ~ 'Platano',
+     USO_LOTE == 72 ~ 'Quinua',
+     USO_LOTE == 73 ~ 'Rabano',
+     USO_LOTE == 74 ~ 'Sandia',
+     USO_LOTE == 75 ~ 'Sorgo',
+     USO_LOTE == 76 ~ 'Tara',
+     USO_LOTE == 77 ~ 'Tomate',
+     USO_LOTE == 78 ~ 'Trigo',
+     USO_LOTE == 79 ~ 'Tumbo',
+     USO_LOTE == 80 ~ 'Tuna',
+     USO_LOTE == 81 ~ 'Vid',
+     USO_LOTE == 82 ~ 'Yuca',
+     USO_LOTE == 83 ~ 'Zanahoria',
+     USO_LOTE == 84 ~ 'Zapallo',
+     USO_LOTE == 85 ~ 'Zarandaja',
+     USO_LOTE == 86 ~ 'Caña de azucar',
+     USO_LOTE == 87 ~ 'Cuerpos de agua',
+     USO_LOTE == 88 ~ 'Cultivos Ilícitos',
+     USO_LOTE == 89 ~ 'Eriazos',
+     USO_LOTE == 90 ~ 'Infraestructura Agrícola',
+     USO_LOTE == 91 ~ 'Inraestructura Pecuaria',
+     USO_LOTE == 92 ~ 'Montes y Bosques',
+     USO_LOTE == 93 ~ 'Otros Cultivos Permanentes',
+     USO_LOTE == 94 ~ 'Otros Cultivos Transitorios',
+     USO_LOTE == 95 ~ 'Otros Usos de la Tierra',
+     USO_LOTE == 96 ~ 'Plantaciones Forestales',
+     USO_LOTE == 97 ~ 'Tierras con Pastos Naturales',
+     USO_LOTE == 98 ~ 'Tierras en Barbecho.',
+     USO_LOTE == 99 ~ 'Tierras en descanso',
+     USO_LOTE == 100 ~ 'Vergel', 
+     TRUE~"No asignado"
+   ), .after = USO_LOTE
+  )
+```
+
+
+```{r}
+#| label: tbl-tabla1
+#| tbl-cap: Área total del lote por sembrío de La Libertad
+
+lotesm_1 %>% 
+  as.data.frame() %>% 
+  group_by(uso_lote1) %>% 
+  summarise(`Área lote total (Ha)`= round_half_up(sum(AREA_LOTE), digits = 2)) %>% 
+  arrange(desc(`Área lote total (Ha)`)) %>% 
+  knitr::kable() %>% 
+  scroll_box(height = "300px")
+
+```
+
+<br>
+
+Tabulación cruzada por sembrío según provincia de La Libertad:
+
+```{r}
+#| label: tbl-tablafinal
+#| tbl-cap: Área total del lote por sembrío según provincia de La Libertad
+
+lotesm_1 %>% 
+  as.data.frame() %>% 
+  group_by(NOMBPROV, uso_lote1) %>% 
+  summarise(`Área lote total (Ha)`= round_half_up(sum(AREA_LOTE), digits = 2)) %>% 
+  arrange(NOMBPROV, desc(`Área lote total (Ha)`)) %>% 
+  knitr::kable() %>% 
+  scroll_box(height = "300px")
+  
+
+```
+
+## Extracción LoteSM
+
+Se solicita la extracción de las parcelas con los determinados productos:
+
+```{r}
+#| label: tbl-tabla2
+#| tbl-cap: Número de casos por tipo de sembrío de La Libertad
+
+lotesm_1 %>% 
+  as.data.frame() %>% 
+  group_by(uso_lote1) %>%
+  summarise(`Nro de casos en data`= n()) %>% 
+  filter(uso_lote1 %in% c("Esparrago", "Palto", "Maíz", "Caña de azucar", "Papa")) %>% 
+  arrange(desc(`Nro de casos en data`)) %>% 
+  janitor::adorn_totals() %>% 
+  knitr::kable() %>% 
+  kable_styling()%>%
+  row_spec(6,italic=T)
+
+```
+
+```{r}
+#| eval: false
+
+fs::dir_create(here("data", "lotesm_1"))
+lotesm_1 %>% 
+  filter(uso_lote1 %in% c("Esparrago", "Palto", "Maíz", "Caña de azucar", "Papa")) %>%
+  st_write(here("data", "lotesm_1", "lotesm_1.shp"), delete_layer = TRUE, quiet = TRUE) #overwrites
+
+```
+
+:::{.callout-note collapse=false appearance='default' icon=true}
+
+## Conclusión
+
+El "sembrío" con mayor área de cultivo es tierras con pastos naturales, tierras eriazas, tierras en descanso, otros usos de la tierra, montos y bosques entre otros.
+
+Respecto a cultivos, se tiene a tara, espárragos, palto, maíz, caña de azúcar, arroz, pimiento, papa, entre otros.
+
+:::

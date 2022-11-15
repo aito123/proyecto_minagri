@@ -1,0 +1,3361 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Santiago Sotelo">
+
+<title>Proyecto MIDAGRI - Reporte MIDAGRI</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Sín resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la busqueda",
+    "search-hide-matches-text": "Esconder resultados adicionales",
+    "search-more-match-text": "hay más resultados en este documento",
+    "search-more-matches-text": "más resultados en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Eviar"
+  }
+}</script>
+
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Proyecto MIDAGRI</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Home</a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-menu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-menu">    
+        <li>
+    <a class="dropdown-item" href="./proyecto_minagri.html">
+ <span class="dropdown-text">Reporte MIDAGRI</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./cap4a.html">
+ <span class="dropdown-text">Revisión base CAPITULO_4A</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">En esta página</h2>
+   
+  <ul>
+  <li><a href="#importar-data" id="toc-importar-data" class="nav-link active" data-scroll-target="#importar-data">Importar data</a></li>
+  <li><a href="#plot-layers" id="toc-plot-layers" class="nav-link" data-scroll-target="#plot-layers">Plot Layers</a></li>
+  <li><a href="#cálculo-de-área-por-cultivo." id="toc-cálculo-de-área-por-cultivo." class="nav-link" data-scroll-target="#cálculo-de-área-por-cultivo.">Cálculo de área por cultivo.</a></li>
+  <li><a href="#extracción-lotesm" id="toc-extracción-lotesm" class="nav-link" data-scroll-target="#extracción-lotesm">Extracción LoteSM</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Reporte MIDAGRI</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>Santiago Sotelo </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Fecha de Publicación</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">15 de noviembre de 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+
+<style type="text/css">
+caption, .table-caption {
+  text-align: left;
+}
+</style>
+<p><strong>Objetivo</strong>: Se realizará una exploración de la base de datos del MIDAGRI. Luego se exportará la base de datos que solo incluya los sembríos de espárrago, palto, maíz, caña de azúcar y papa.</p>
+<div class="cell">
+
+</div>
+<section id="importar-data" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="importar-data">Importar data</h2>
+<p>Layers disponibles en la carpeta <code>QLAB_MIDAGRI_1.gdb</code>:</p>
+<div class="cell column-screen-right">
+<div class="cell-output cell-output-stdout">
+<pre><code>Driver: OpenFileGDB 
+Available layers:
+                         layer_name             geometry_type features fields              crs_name
+1                        ParcelaSMI             Multi Polygon     6043     20                WGS 84
+2                         ParcelaSM             Multi Polygon     6088     20                WGS 84
+3                            LoteSM             Multi Polygon    14864     25                WGS 84
+4                     CentroPoblado             Multi Polygon      352      5                WGS 84
+5                        CoberturaA             Multi Polygon      314     22                WGS 84
+6                         Distritos             Multi Polygon       83      8                WGS 84
+7                            PisosA             Multi Polygon      268     14                WGS 84
+8                       Hidrografia         Multi Line String     6556      5                WGS 84
+9                              Vias         Multi Line String    28711      3                WGS 84
+10                      SectorEsMMA             Multi Polygon      315     28                WGS 84
+11                       Provincias             Multi Polygon       12      7                WGS 84
+12                         Regiones             Multi Polygon        1      5                WGS 84
+13                            SedeA                     Point       17     31                WGS 84
+14         MARCOAREA_LA_LIBERTAD_ac             Multi Polygon     1233     41 WGS 84 / UTM zone 18S
+15 MARCOLISTAEMPRESA_LA_LIBERTAD_ac 3D Measured Multi Polygon      155     31 WGS 84 / UTM zone 18S
+16   MARCOLISTAENCUESTA_LA_LIBERTAD 3D Measured Multi Polygon      411     33 WGS 84 / UTM zone 18S
+17        MARCOLISTAUSO_LA_LIBERTAD 3D Measured Multi Polygon     1226     35 WGS 84 / UTM zone 18S</code></pre>
+</div>
+</div>
+</section>
+<section id="plot-layers" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="plot-layers">Plot Layers</h2>
+<div class="cell">
+
+</div>
+<div id="fig-plot" class="cell column-body-outset quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-1.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(a) ParcelaSMI</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-2.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(b) ParcelaSM</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-3.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(c) LoteSM</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-4.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(d) CentroPoblado</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-5" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-5.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(e) CoberturaA</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-6" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-6.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(f) Distritos</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-7" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-7.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(g) PisosA</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-8" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-8.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(h) Hidrografia</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-9" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-9.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(i) Vias</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-10" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-10.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(j) SectorEsMMA</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-11" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-11.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(k) Provincias</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-12" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-12.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(l) Regiones</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-13" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-13.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(m) SedeA</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-14" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-14.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(n) MARCOAREA…</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-15" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-15.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(o) MARCOLISTAEMP…</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-16" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-16.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(p) MARCOLISTAENC…</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-plot-17" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="proyecto_minagri_files/figure-html/fig-plot-17.png" class="img-fluid figure-img" data-ref-parent="fig-plot" width="672"></p>
+<p></p><figcaption class="figure-caption">(q) MARCOLISTAUSO…</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figura 1: Ploteo de layers de <code>QLAB_MIDAGRI_1.gdb</code></figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="cálculo-de-área-por-cultivo." class="level2">
+<h2 class="anchored" data-anchor-id="cálculo-de-área-por-cultivo.">Cálculo de área por cultivo.</h2>
+<p>Para realizar este cálculo necesitamos el layer <code>LoteSM</code>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-filas" class="anchored">
+
+<table><caption>Tabla 1:  Primeras 5 filas del layer LoteSM </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> GEOCODIGO </th>
+   <th style="text-align:left;"> IDDPTO </th>
+   <th style="text-align:left;"> IDPROV </th>
+   <th style="text-align:left;"> IDDIST </th>
+   <th style="text-align:left;"> SEGMENTO </th>
+   <th style="text-align:right;"> AREA_HA </th>
+   <th style="text-align:left;"> NRO_SM </th>
+   <th style="text-align:right;"> TIPO_MARCO </th>
+   <th style="text-align:right;"> NRO_DIVISION </th>
+   <th style="text-align:left;"> COD_CUEST </th>
+   <th style="text-align:left;"> CONSULTOR </th>
+   <th style="text-align:left;"> NOMBDEP </th>
+   <th style="text-align:left;"> NOMBPROV </th>
+   <th style="text-align:left;"> NOMBDIST </th>
+   <th style="text-align:left;"> NRO_PARCELA </th>
+   <th style="text-align:left;"> ID_PARCELA </th>
+   <th style="text-align:left;"> NRO_LOTE </th>
+   <th style="text-align:left;"> ID_LOTE </th>
+   <th style="text-align:right;"> AREA_LOTE </th>
+   <th style="text-align:right;"> USO_LOTE </th>
+   <th style="text-align:right;"> COBERTURA_LOTE </th>
+   <th style="text-align:right;"> SHAPE_Length </th>
+   <th style="text-align:right;"> SHAPE_Area </th>
+   <th style="text-align:right;"> x </th>
+   <th style="text-align:right;"> Y </th>
+   <th style="text-align:left;"> SHAPE </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 131201110101400261190 </td>
+   <td style="text-align:left;"> 13 </td>
+   <td style="text-align:left;"> 1312 </td>
+   <td style="text-align:left;"> 131201 </td>
+   <td style="text-align:left;"> 00261190 </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:left;"> 02189 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> 130218914 </td>
+   <td style="text-align:left;"> RVJL </td>
+   <td style="text-align:left;"> LA LIBERTAD </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> 06 </td>
+   <td style="text-align:left;"> 13021891406 </td>
+   <td style="text-align:left;"> 03 </td>
+   <td style="text-align:left;"> 1302189140603 </td>
+   <td style="text-align:right;"> 4.4224590 </td>
+   <td style="text-align:right;"> 60 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0.0107058 </td>
+   <td style="text-align:right;"> 3.6e-06 </td>
+   <td style="text-align:right;"> -78.81172 </td>
+   <td style="text-align:right;"> -8.453951 </td>
+   <td style="text-align:left;"> MULTIPOLYGON (((-78.81166 -... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 131201110101400261190 </td>
+   <td style="text-align:left;"> 13 </td>
+   <td style="text-align:left;"> 1312 </td>
+   <td style="text-align:left;"> 131201 </td>
+   <td style="text-align:left;"> 00261190 </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:left;"> 02189 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> 130218914 </td>
+   <td style="text-align:left;"> RVJL </td>
+   <td style="text-align:left;"> LA LIBERTAD </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> 06 </td>
+   <td style="text-align:left;"> 13021891406 </td>
+   <td style="text-align:left;"> 07 </td>
+   <td style="text-align:left;"> 1302189140607 </td>
+   <td style="text-align:right;"> 0.8332049 </td>
+   <td style="text-align:right;"> 95 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0.0035534 </td>
+   <td style="text-align:right;"> 7.0e-07 </td>
+   <td style="text-align:right;"> -78.81171 </td>
+   <td style="text-align:right;"> -8.456186 </td>
+   <td style="text-align:left;"> MULTIPOLYGON (((-78.81115 -... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 131201110101400261190 </td>
+   <td style="text-align:left;"> 13 </td>
+   <td style="text-align:left;"> 1312 </td>
+   <td style="text-align:left;"> 131201 </td>
+   <td style="text-align:left;"> 00261190 </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:left;"> 02189 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> 130218914 </td>
+   <td style="text-align:left;"> RVJL </td>
+   <td style="text-align:left;"> LA LIBERTAD </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> 06 </td>
+   <td style="text-align:left;"> 13021891406 </td>
+   <td style="text-align:left;"> 01 </td>
+   <td style="text-align:left;"> 1302189140601 </td>
+   <td style="text-align:right;"> 1.1101161 </td>
+   <td style="text-align:right;"> 41 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0.0041080 </td>
+   <td style="text-align:right;"> 9.0e-07 </td>
+   <td style="text-align:right;"> -78.81245 </td>
+   <td style="text-align:right;"> -8.455418 </td>
+   <td style="text-align:left;"> MULTIPOLYGON (((-78.81196 -... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 131201110101400261190 </td>
+   <td style="text-align:left;"> 13 </td>
+   <td style="text-align:left;"> 1312 </td>
+   <td style="text-align:left;"> 131201 </td>
+   <td style="text-align:left;"> 00261190 </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:left;"> 02189 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> 130218914 </td>
+   <td style="text-align:left;"> RVJL </td>
+   <td style="text-align:left;"> LA LIBERTAD </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> 06 </td>
+   <td style="text-align:left;"> 13021891406 </td>
+   <td style="text-align:left;"> 04 </td>
+   <td style="text-align:left;"> 1302189140604 </td>
+   <td style="text-align:right;"> 0.8044634 </td>
+   <td style="text-align:right;"> 71 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0.0037099 </td>
+   <td style="text-align:right;"> 7.0e-07 </td>
+   <td style="text-align:right;"> -78.81264 </td>
+   <td style="text-align:right;"> -8.456017 </td>
+   <td style="text-align:left;"> MULTIPOLYGON (((-78.81218 -... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 131201110101400262419 </td>
+   <td style="text-align:left;"> 13 </td>
+   <td style="text-align:left;"> 1312 </td>
+   <td style="text-align:left;"> 131201 </td>
+   <td style="text-align:left;"> 00262419 </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:left;"> 02190 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 130219011 </td>
+   <td style="text-align:left;"> RVJL </td>
+   <td style="text-align:left;"> LA LIBERTAD </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> 05 </td>
+   <td style="text-align:left;"> 13021901105 </td>
+   <td style="text-align:left;"> 01 </td>
+   <td style="text-align:left;"> 1302190110501 </td>
+   <td style="text-align:right;"> 4.9824818 </td>
+   <td style="text-align:right;"> 26 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0.0078129 </td>
+   <td style="text-align:right;"> 4.1e-06 </td>
+   <td style="text-align:right;"> -78.84331 </td>
+   <td style="text-align:right;"> -8.473901 </td>
+   <td style="text-align:left;"> MULTIPOLYGON (((-78.84299 -... </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>En particular las variables:</p>
+<ul>
+<li><code>NOMPROV</code>: Nombre de la provincia</li>
+<li><code>USO_LOTE</code>: Tipo de uso y cobertura de la tierra (papa, palta, pastos cultivados y otros usos que no sean cultivos (infraestructuras, cuerpos de agua, eriazos, formaciones rocosas etc…), P_301a. 100 Opciones. Selección única.</li>
+<li><code>AREA_LOTE</code>: Área del Lote en hectáreas (Calcular en Zona 18).</li>
+</ul>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tipos de uso del lote como se definen en el <code>DICCIONARIO_MMM_18_11_2021.xlsx</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<table class="table">
+<colgroup>
+<col style="width: 0%">
+<col style="width: 99%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Categorías</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CULTIVO_LOTE</td>
+<td>1. kiwicha, o amaranto<br> 2. Aji<br> 3. Ajo<br> 4. Alcachofa<br> 5. Alfalfa<br> 6. Algodon<br> 7. Arandanos<br> 8. Arroz<br> 9. Arverja<br> 10. Avena<br> 11. Banano<br> 12. Cacao<br> 13. Cafe<br> 14. Camerun<br> 15. Camote<br> 16. Capuli<br> 17. Cebada <br> 18. Cebolla<br> 19. Cerezo<br> 20. Chia (Salvia Hispanica)<br> 21. Chiromoya<br> 22. Chocho o Tarwi<br> 23. Ciruelo<br> 24. Col o repollo <br> 25. Culantro <br> 26. Esparrago<br> 27. Frijol<br> 28. Garbanzo<br> 29. Granadilla<br> 30. Granado<br> 31. Guanabano<br> 32. Guayabo<br> 33. Haba<br> 34. Higuera<br> 35. Lechuga<br> 36. Lenteja<br> 37. Lima<br> 38. Limon<br> 39. Linaza<br> 40. Lucuma<br> 41. Maíz<br> 42. Mamey<br> 43. Mandarina<br> 44. Mango<br> 45. Mani<br> 46. Manzano<br> 47. Maracuya<br> 48. Marigold<br> 49. Mashua o izano<br> 50. Melocotonero<br> 51. Melon <br> 52. Membrillo<br> 53. Naranjo<br> 54. Ñuña<br> 55. Oca<br> 56. Olivo<br> 57. Olluco<br> 58. Pacae o guabo<br> 59. Pallar <br> 60. Palto<br> 61. Papa<br> 62. Papikra<br> 63. Otros Pastos Cultivados<br> 64. Pecano<br> 65. Pepinillo<br> 66. Pepino<br> 67. Pimiento<br> 68. Piña<br> 69. Piquillo<br> 70. Pitahaya<br> 71. Platano<br> 72. Quinua<br> 73. Rabano<br> 74. Sandia<br> 75. Sorgo<br> 76. Tara<br> 77. Tomate<br> 78. Trigo<br> 79. Tumbo<br> 80. Tuna <br> 81. Vid<br> 82. Yuca<br> 83. Zanahoria<br> 84. Zapallo<br> 85. Zarandaja<br> 86. Caña de azucar<br> 87. Cuerpos de agua<br> 88. Cultivos Ilícitos<br> 89. Eriazos<br> 90. Infraestructura Agrícola<br> 91. Inraestructura Pecuaria<br> 92. Montes y Bosques<br> 93. Otros Cultivos Permanentes<br> 94. Otros Cultivos Transitorios<br> 95. Otros Usos de la Tierra<br> 96. Plantaciones Forestales<br> 97. Tierras con Pastos Naturales<br> 98. Tierras en Barbecho.<br> 99. Tierras en descanso<br> 100. Vergel<br></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Tabulación cruzada por sembrío:</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-tabla1" class="anchored">
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; "><table><caption>Tabla 2:  Área total del lote por sembrío de La Libertad </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> uso_lote1 </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Área lote total (Ha) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 47241.87 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 14653.14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 9131.90 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 6646.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 6510.93 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 3303.08 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 1744.65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 1395.30 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 1258.72 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tara </td>
+   <td style="text-align:right;"> 1239.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Esparrago </td>
+   <td style="text-align:right;"> 1025.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 829.43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 808.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caña de azucar </td>
+   <td style="text-align:right;"> 769.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Arroz </td>
+   <td style="text-align:right;"> 663.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pimiento </td>
+   <td style="text-align:right;"> 510.85 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 474.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 321.86 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 154.45 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 148.19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Vid </td>
+   <td style="text-align:right;"> 147.82 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 116.33 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Quinua </td>
+   <td style="text-align:right;"> 111.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mango </td>
+   <td style="text-align:right;"> 111.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cultivos Ilícitos </td>
+   <td style="text-align:right;"> 97.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Maracuya </td>
+   <td style="text-align:right;"> 82.87 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 82.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Chocho o Tarwi </td>
+   <td style="text-align:right;"> 76.29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 75.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 75.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Oca </td>
+   <td style="text-align:right;"> 57.93 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 57.81 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 43.50 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cebada </td>
+   <td style="text-align:right;"> 41.32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lima </td>
+   <td style="text-align:right;"> 40.46 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 40.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Trigo </td>
+   <td style="text-align:right;"> 37.87 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Olluco </td>
+   <td style="text-align:right;"> 36.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Piña </td>
+   <td style="text-align:right;"> 35.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Avena </td>
+   <td style="text-align:right;"> 33.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Platano </td>
+   <td style="text-align:right;"> 32.59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Zapallo </td>
+   <td style="text-align:right;"> 31.97 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Naranjo </td>
+   <td style="text-align:right;"> 28.83 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mandarina </td>
+   <td style="text-align:right;"> 25.11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Banano </td>
+   <td style="text-align:right;"> 21.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Manzano </td>
+   <td style="text-align:right;"> 17.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sandia </td>
+   <td style="text-align:right;"> 17.86 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Aji </td>
+   <td style="text-align:right;"> 16.85 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Limon </td>
+   <td style="text-align:right;"> 16.59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Garbanzo </td>
+   <td style="text-align:right;"> 15.32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Chia (Salvia Hispanica) </td>
+   <td style="text-align:right;"> 14.52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alcachofa </td>
+   <td style="text-align:right;"> 13.18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Zarandaja </td>
+   <td style="text-align:right;"> 12.75 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lucuma </td>
+   <td style="text-align:right;"> 10.63 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lechuga </td>
+   <td style="text-align:right;"> 10.43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pepinillo </td>
+   <td style="text-align:right;"> 8.84 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Camote </td>
+   <td style="text-align:right;"> 7.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 7.09 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pepino </td>
+   <td style="text-align:right;"> 7.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tomate </td>
+   <td style="text-align:right;"> 5.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Linaza </td>
+   <td style="text-align:right;"> 4.27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pitahaya </td>
+   <td style="text-align:right;"> 3.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pallar </td>
+   <td style="text-align:right;"> 3.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Membrillo </td>
+   <td style="text-align:right;"> 3.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cafe </td>
+   <td style="text-align:right;"> 3.44 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ciruelo </td>
+   <td style="text-align:right;"> 3.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Zanahoria </td>
+   <td style="text-align:right;"> 3.24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Haba </td>
+   <td style="text-align:right;"> 3.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Culantro </td>
+   <td style="text-align:right;"> 3.14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mani </td>
+   <td style="text-align:right;"> 3.08 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cacao </td>
+   <td style="text-align:right;"> 2.72 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Granadilla </td>
+   <td style="text-align:right;"> 2.62 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ajo </td>
+   <td style="text-align:right;"> 2.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tumbo </td>
+   <td style="text-align:right;"> 2.11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Col o repollo </td>
+   <td style="text-align:right;"> 2.08 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Chiromoya </td>
+   <td style="text-align:right;"> 1.96 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Melocotonero </td>
+   <td style="text-align:right;"> 1.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> No asignado </td>
+   <td style="text-align:right;"> 1.27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pacae o guabo </td>
+   <td style="text-align:right;"> 1.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Arandanos </td>
+   <td style="text-align:right;"> 1.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> kiwicha, o amaranto </td>
+   <td style="text-align:right;"> 0.75 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Papikra </td>
+   <td style="text-align:right;"> 0.74 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mashua o izano </td>
+   <td style="text-align:right;"> 0.03 </td>
+  </tr>
+</tbody>
+</table></div>
+
+</div>
+</div>
+</div>
+<p><br></p>
+<p>Tabulación cruzada por sembrío según provincia de La Libertad:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-tablafinal" class="anchored">
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; "><table><caption>Tabla 3:  Área total del lote por sembrío según provincia de La Libertad </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> NOMBPROV </th>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> uso_lote1 </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Área lote total (Ha) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 745.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Esparrago </td>
+   <td style="text-align:right;"> 576.79 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Caña de azucar </td>
+   <td style="text-align:right;"> 348.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 170.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 147.68 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 134.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 115.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 71.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 63.09 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 30.97 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 24.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Vid </td>
+   <td style="text-align:right;"> 14.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Garbanzo </td>
+   <td style="text-align:right;"> 13.09 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Platano </td>
+   <td style="text-align:right;"> 8.84 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 8.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Arroz </td>
+   <td style="text-align:right;"> 6.76 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Zapallo </td>
+   <td style="text-align:right;"> 4.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 2.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Maracuya </td>
+   <td style="text-align:right;"> 2.58 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Zarandaja </td>
+   <td style="text-align:right;"> 2.10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Lucuma </td>
+   <td style="text-align:right;"> 1.83 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 1.48 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Tomate </td>
+   <td style="text-align:right;"> 1.09 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 0.59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 0.23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ASCOPE </td>
+   <td style="text-align:left;"> Camote </td>
+   <td style="text-align:right;"> 0.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 5805.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 2609.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 862.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 320.64 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 162.54 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 120.38 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 83.70 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 33.43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 31.31 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Mango </td>
+   <td style="text-align:right;"> 21.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 14.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 12.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 9.60 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Platano </td>
+   <td style="text-align:right;"> 4.73 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 3.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Mani </td>
+   <td style="text-align:right;"> 3.08 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Cultivos Ilícitos </td>
+   <td style="text-align:right;"> 2.90 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Cacao </td>
+   <td style="text-align:right;"> 2.72 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 2.24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Oca </td>
+   <td style="text-align:right;"> 2.04 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Naranjo </td>
+   <td style="text-align:right;"> 1.90 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Caña de azucar </td>
+   <td style="text-align:right;"> 1.27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Limon </td>
+   <td style="text-align:right;"> 1.14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Quinua </td>
+   <td style="text-align:right;"> 0.92 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 0.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 0.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 0.14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 0.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> BOLIVAR </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 0.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 2596.38 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 2100.19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 794.91 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 269.82 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Arroz </td>
+   <td style="text-align:right;"> 268.53 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 187.25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 185.30 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 180.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 155.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Caña de azucar </td>
+   <td style="text-align:right;"> 150.08 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Esparrago </td>
+   <td style="text-align:right;"> 139.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 78.82 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 63.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Mango </td>
+   <td style="text-align:right;"> 51.99 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Vid </td>
+   <td style="text-align:right;"> 51.50 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 45.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 32.90 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Maracuya </td>
+   <td style="text-align:right;"> 24.32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 21.25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Mandarina </td>
+   <td style="text-align:right;"> 20.41 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Banano </td>
+   <td style="text-align:right;"> 20.33 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 16.30 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Zarandaja </td>
+   <td style="text-align:right;"> 10.65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Sandia </td>
+   <td style="text-align:right;"> 10.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 7.62 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Lechuga </td>
+   <td style="text-align:right;"> 7.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Tara </td>
+   <td style="text-align:right;"> 6.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Aji </td>
+   <td style="text-align:right;"> 5.03 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 4.94 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 3.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Tomate </td>
+   <td style="text-align:right;"> 3.09 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 2.78 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Camote </td>
+   <td style="text-align:right;"> 2.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Tumbo </td>
+   <td style="text-align:right;"> 2.11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Naranjo </td>
+   <td style="text-align:right;"> 1.50 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Lima </td>
+   <td style="text-align:right;"> 1.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 1.17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Pepinillo </td>
+   <td style="text-align:right;"> 1.16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Pitahaya </td>
+   <td style="text-align:right;"> 1.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 1.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Pimiento </td>
+   <td style="text-align:right;"> 1.11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CHEPEN </td>
+   <td style="text-align:left;"> Culantro </td>
+   <td style="text-align:right;"> 0.41 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 3031.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 1583.58 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 1187.54 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 582.46 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 280.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 132.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 130.67 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 120.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 119.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Vid </td>
+   <td style="text-align:right;"> 81.67 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Cultivos Ilícitos </td>
+   <td style="text-align:right;"> 56.46 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 41.94 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 33.90 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Arroz </td>
+   <td style="text-align:right;"> 30.65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 29.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 15.33 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 10.38 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Manzano </td>
+   <td style="text-align:right;"> 7.71 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 7.29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Maracuya </td>
+   <td style="text-align:right;"> 5.99 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 4.94 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Trigo </td>
+   <td style="text-align:right;"> 4.42 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 4.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 4.29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Aji </td>
+   <td style="text-align:right;"> 4.23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Naranjo </td>
+   <td style="text-align:right;"> 3.48 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Lima </td>
+   <td style="text-align:right;"> 3.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 2.70 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Chiromoya </td>
+   <td style="text-align:right;"> 1.96 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Melocotonero </td>
+   <td style="text-align:right;"> 1.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Mango </td>
+   <td style="text-align:right;"> 1.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Olluco </td>
+   <td style="text-align:right;"> 1.53 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Cafe </td>
+   <td style="text-align:right;"> 1.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Chocho o Tarwi </td>
+   <td style="text-align:right;"> 1.38 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Banano </td>
+   <td style="text-align:right;"> 1.25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Cebada </td>
+   <td style="text-align:right;"> 1.22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Ciruelo </td>
+   <td style="text-align:right;"> 1.07 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Pacae o guabo </td>
+   <td style="text-align:right;"> 1.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Oca </td>
+   <td style="text-align:right;"> 0.98 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 0.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 0.83 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Pitahaya </td>
+   <td style="text-align:right;"> 0.67 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Col o repollo </td>
+   <td style="text-align:right;"> 0.62 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Granadilla </td>
+   <td style="text-align:right;"> 0.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 0.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Tara </td>
+   <td style="text-align:right;"> 0.20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GRAN CHIMU </td>
+   <td style="text-align:left;"> Haba </td>
+   <td style="text-align:right;"> 0.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 3716.01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 743.38 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 202.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 154.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 98.30 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 49.01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 44.11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 33.64 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 28.81 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 22.20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 15.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Chocho o Tarwi </td>
+   <td style="text-align:right;"> 14.71 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Cebada </td>
+   <td style="text-align:right;"> 10.85 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 2.53 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Avena </td>
+   <td style="text-align:right;"> 2.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Trigo </td>
+   <td style="text-align:right;"> 2.42 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 2.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 1.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 0.76 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Oca </td>
+   <td style="text-align:right;"> 0.65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 0.44 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 0.42 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Olluco </td>
+   <td style="text-align:right;"> 0.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> JULCAN </td>
+   <td style="text-align:left;"> Haba </td>
+   <td style="text-align:right;"> 0.34 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 1618.60 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 570.67 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 317.97 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 226.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 192.45 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 170.52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 91.03 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 83.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 76.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 66.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 65.24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 28.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Oca </td>
+   <td style="text-align:right;"> 23.59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 20.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Chocho o Tarwi </td>
+   <td style="text-align:right;"> 18.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Avena </td>
+   <td style="text-align:right;"> 17.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Olluco </td>
+   <td style="text-align:right;"> 15.84 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 15.77 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Lima </td>
+   <td style="text-align:right;"> 12.32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Naranjo </td>
+   <td style="text-align:right;"> 12.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 9.97 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Zapallo </td>
+   <td style="text-align:right;"> 9.34 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Platano </td>
+   <td style="text-align:right;"> 8.09 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Piña </td>
+   <td style="text-align:right;"> 6.43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Cebada </td>
+   <td style="text-align:right;"> 5.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 4.51 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 4.25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Lucuma </td>
+   <td style="text-align:right;"> 4.22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Manzano </td>
+   <td style="text-align:right;"> 3.99 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Membrillo </td>
+   <td style="text-align:right;"> 3.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 2.76 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Limon </td>
+   <td style="text-align:right;"> 2.75 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Trigo </td>
+   <td style="text-align:right;"> 2.65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Tara </td>
+   <td style="text-align:right;"> 2.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 2.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 1.43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Garbanzo </td>
+   <td style="text-align:right;"> 1.10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 0.97 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Aji </td>
+   <td style="text-align:right;"> 0.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 0.73 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Cafe </td>
+   <td style="text-align:right;"> 0.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Tomate </td>
+   <td style="text-align:right;"> 0.60 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Haba </td>
+   <td style="text-align:right;"> 0.22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Papikra </td>
+   <td style="text-align:right;"> 0.22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Lechuga </td>
+   <td style="text-align:right;"> 0.19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OTUZCO </td>
+   <td style="text-align:left;"> Camote </td>
+   <td style="text-align:right;"> 0.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 4034.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 923.70 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 551.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Pimiento </td>
+   <td style="text-align:right;"> 506.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Arroz </td>
+   <td style="text-align:right;"> 337.42 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Esparrago </td>
+   <td style="text-align:right;"> 237.04 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 109.48 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Quinua </td>
+   <td style="text-align:right;"> 109.45 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 97.14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 75.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 51.46 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 45.01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 35.73 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Tara </td>
+   <td style="text-align:right;"> 25.31 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 23.20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 20.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 19.22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 17.10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Maracuya </td>
+   <td style="text-align:right;"> 14.79 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Chia (Salvia Hispanica) </td>
+   <td style="text-align:right;"> 14.52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 7.09 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 5.29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Pallar </td>
+   <td style="text-align:right;"> 3.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Limon </td>
+   <td style="text-align:right;"> 2.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Sandia </td>
+   <td style="text-align:right;"> 2.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 1.52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Lima </td>
+   <td style="text-align:right;"> 0.52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 0.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 0.34 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACASMAYO </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 0.20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 7730.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 2019.85 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 780.04 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 483.71 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 133.32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 99.96 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 85.92 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 62.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 43.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 41.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Trigo </td>
+   <td style="text-align:right;"> 23.10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 21.23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 19.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 16.59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Lima </td>
+   <td style="text-align:right;"> 15.96 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Mango </td>
+   <td style="text-align:right;"> 14.98 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Oca </td>
+   <td style="text-align:right;"> 13.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 13.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 11.85 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 11.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Cebada </td>
+   <td style="text-align:right;"> 11.14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Naranjo </td>
+   <td style="text-align:right;"> 8.97 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Platano </td>
+   <td style="text-align:right;"> 8.25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Limon </td>
+   <td style="text-align:right;"> 7.96 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 7.43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Manzano </td>
+   <td style="text-align:right;"> 6.14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Olluco </td>
+   <td style="text-align:right;"> 5.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Linaza </td>
+   <td style="text-align:right;"> 3.31 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Ajo </td>
+   <td style="text-align:right;"> 2.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Tara </td>
+   <td style="text-align:right;"> 2.22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Zanahoria </td>
+   <td style="text-align:right;"> 1.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Piña </td>
+   <td style="text-align:right;"> 1.36 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 1.20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Chocho o Tarwi </td>
+   <td style="text-align:right;"> 1.07 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 0.94 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Mandarina </td>
+   <td style="text-align:right;"> 0.85 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Haba </td>
+   <td style="text-align:right;"> 0.68 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 0.58 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Cafe </td>
+   <td style="text-align:right;"> 0.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Banano </td>
+   <td style="text-align:right;"> 0.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 0.18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 0.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 0.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PATAZ </td>
+   <td style="text-align:left;"> Mashua o izano </td>
+   <td style="text-align:right;"> 0.03 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 2215.45 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 1191.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 849.65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 647.01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 589.20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 540.51 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 309.33 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 139.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 82.86 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 68.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 65.51 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 40.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 38.98 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 17.01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Chocho o Tarwi </td>
+   <td style="text-align:right;"> 15.75 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Oca </td>
+   <td style="text-align:right;"> 8.98 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Avena </td>
+   <td style="text-align:right;"> 8.51 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Cebada </td>
+   <td style="text-align:right;"> 8.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 6.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 6.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 5.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 4.16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Olluco </td>
+   <td style="text-align:right;"> 3.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Granadilla </td>
+   <td style="text-align:right;"> 2.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 1.77 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Mango </td>
+   <td style="text-align:right;"> 1.74 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 1.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Haba </td>
+   <td style="text-align:right;"> 1.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 1.29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Camote </td>
+   <td style="text-align:right;"> 1.01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Quinua </td>
+   <td style="text-align:right;"> 1.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Lima </td>
+   <td style="text-align:right;"> 0.93 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 0.83 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> kiwicha, o amaranto </td>
+   <td style="text-align:right;"> 0.75 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Platano </td>
+   <td style="text-align:right;"> 0.73 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Papikra </td>
+   <td style="text-align:right;"> 0.52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 0.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Linaza </td>
+   <td style="text-align:right;"> 0.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Col o repollo </td>
+   <td style="text-align:right;"> 0.16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Trigo </td>
+   <td style="text-align:right;"> 0.07 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Manzano </td>
+   <td style="text-align:right;"> 0.05 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANCHEZ CARRION </td>
+   <td style="text-align:left;"> Culantro </td>
+   <td style="text-align:right;"> 0.04 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 7632.92 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 1147.87 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 1027.59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 554.32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 356.73 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 280.54 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 177.82 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 145.64 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Plantaciones Forestales </td>
+   <td style="text-align:right;"> 107.77 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Vergel </td>
+   <td style="text-align:right;"> 40.20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 33.33 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 25.84 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Chocho o Tarwi </td>
+   <td style="text-align:right;"> 22.86 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 13.78 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 12.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 11.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Olluco </td>
+   <td style="text-align:right;"> 10.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 9.75 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Oca </td>
+   <td style="text-align:right;"> 8.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 6.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Avena </td>
+   <td style="text-align:right;"> 5.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Trigo </td>
+   <td style="text-align:right;"> 4.52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 3.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Cebada </td>
+   <td style="text-align:right;"> 3.25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 1.30 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> No asignado </td>
+   <td style="text-align:right;"> 1.27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Platano </td>
+   <td style="text-align:right;"> 1.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Cafe </td>
+   <td style="text-align:right;"> 0.74 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Linaza </td>
+   <td style="text-align:right;"> 0.60 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 0.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Haba </td>
+   <td style="text-align:right;"> 0.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 0.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Mandarina </td>
+   <td style="text-align:right;"> 0.33 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Zanahoria </td>
+   <td style="text-align:right;"> 0.21 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Camote </td>
+   <td style="text-align:right;"> 0.20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SANTIAGO DE CHUCO </td>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 0.08 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 17104.19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Tara </td>
+   <td style="text-align:right;"> 1189.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 561.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 217.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 153.21 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 96.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 91.43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 86.70 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 70.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 31.97 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Piña </td>
+   <td style="text-align:right;"> 27.33 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Caña de azucar </td>
+   <td style="text-align:right;"> 18.17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Zapallo </td>
+   <td style="text-align:right;"> 13.96 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Mango </td>
+   <td style="text-align:right;"> 7.42 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 6.65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 6.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Lima </td>
+   <td style="text-align:right;"> 5.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 4.70 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Lucuma </td>
+   <td style="text-align:right;"> 4.58 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 4.54 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Pimiento </td>
+   <td style="text-align:right;"> 3.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Aji </td>
+   <td style="text-align:right;"> 3.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Mandarina </td>
+   <td style="text-align:right;"> 3.51 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Cultivos Ilícitos </td>
+   <td style="text-align:right;"> 2.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 1.96 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Chocho o Tarwi </td>
+   <td style="text-align:right;"> 1.94 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 1.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Cebada </td>
+   <td style="text-align:right;"> 1.65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 1.60 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Garbanzo </td>
+   <td style="text-align:right;"> 1.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 0.98 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Naranjo </td>
+   <td style="text-align:right;"> 0.94 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Trigo </td>
+   <td style="text-align:right;"> 0.70 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Lechuga </td>
+   <td style="text-align:right;"> 0.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Tomate </td>
+   <td style="text-align:right;"> 0.59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Col o repollo </td>
+   <td style="text-align:right;"> 0.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 0.48 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Maracuya </td>
+   <td style="text-align:right;"> 0.31 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 0.22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Olluco </td>
+   <td style="text-align:right;"> 0.18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TRUJILLO </td>
+   <td style="text-align:left;"> Culantro </td>
+   <td style="text-align:right;"> 0.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Otros Usos de la Tierra </td>
+   <td style="text-align:right;"> 2834.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Eriazos </td>
+   <td style="text-align:right;"> 2167.44 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Cuerpos de agua </td>
+   <td style="text-align:right;"> 386.60 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Caña de azucar </td>
+   <td style="text-align:right;"> 251.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Tierras con Pastos Naturales </td>
+   <td style="text-align:right;"> 225.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 175.90 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Tierras en descanso </td>
+   <td style="text-align:right;"> 159.84 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 152.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Montes y Bosques </td>
+   <td style="text-align:right;"> 128.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Esparrago </td>
+   <td style="text-align:right;"> 72.67 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Tierras en Barbecho. </td>
+   <td style="text-align:right;"> 37.93 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Cultivos Ilícitos </td>
+   <td style="text-align:right;"> 35.35 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Maracuya </td>
+   <td style="text-align:right;"> 34.87 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Arroz </td>
+   <td style="text-align:right;"> 20.04 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Tara </td>
+   <td style="text-align:right;"> 13.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Alcachofa </td>
+   <td style="text-align:right;"> 13.18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Mango </td>
+   <td style="text-align:right;"> 12.17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Infraestructura Agrícola </td>
+   <td style="text-align:right;"> 12.15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Pepinillo </td>
+   <td style="text-align:right;"> 7.68 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Pepino </td>
+   <td style="text-align:right;"> 7.06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Alfalfa </td>
+   <td style="text-align:right;"> 5.79 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Otros Pastos Cultivados </td>
+   <td style="text-align:right;"> 5.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Sandia </td>
+   <td style="text-align:right;"> 5.37 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Inraestructura Pecuaria </td>
+   <td style="text-align:right;"> 5.12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Yuca </td>
+   <td style="text-align:right;"> 4.53 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Zapallo </td>
+   <td style="text-align:right;"> 4.52 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Camote </td>
+   <td style="text-align:right;"> 3.87 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Arverja </td>
+   <td style="text-align:right;"> 3.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Aji </td>
+   <td style="text-align:right;"> 2.98 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Limon </td>
+   <td style="text-align:right;"> 2.63 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Culantro </td>
+   <td style="text-align:right;"> 2.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Frijol </td>
+   <td style="text-align:right;"> 2.55 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Otros Cultivos Permanentes </td>
+   <td style="text-align:right;"> 2.34 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Ciruelo </td>
+   <td style="text-align:right;"> 2.28 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Lechuga </td>
+   <td style="text-align:right;"> 2.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Pitahaya </td>
+   <td style="text-align:right;"> 1.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Otros Cultivos Transitorios </td>
+   <td style="text-align:right;"> 1.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Zanahoria </td>
+   <td style="text-align:right;"> 1.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Arandanos </td>
+   <td style="text-align:right;"> 1.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Cebolla </td>
+   <td style="text-align:right;"> 0.94 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Col o repollo </td>
+   <td style="text-align:right;"> 0.81 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Platano </td>
+   <td style="text-align:right;"> 0.80 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VIRU </td>
+   <td style="text-align:left;"> Lenteja </td>
+   <td style="text-align:right;"> 0.34 </td>
+  </tr>
+</tbody>
+</table></div>
+
+</div>
+</div>
+</div>
+</section>
+<section id="extracción-lotesm" class="level2">
+<h2 class="anchored" data-anchor-id="extracción-lotesm">Extracción LoteSM</h2>
+<p>Se solicita la extracción de las parcelas con los determinados productos:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-tabla2" class="anchored">
+
+<table class="table" style="margin-left: auto; margin-right: auto;"><caption>Tabla 4:  Número de casos por tipo de sembrío de La Libertad </caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> uso_lote1 </th>
+   <th style="text-align:right;"> Nro de casos en data </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Papa </td>
+   <td style="text-align:right;"> 741 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Maíz </td>
+   <td style="text-align:right;"> 444 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Palto </td>
+   <td style="text-align:right;"> 327 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Esparrago </td>
+   <td style="text-align:right;"> 252 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caña de azucar </td>
+   <td style="text-align:right;"> 139 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-style: italic;"> Total </td>
+   <td style="text-align:right;font-style: italic;"> 1903 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Conclusión
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>El “sembrío” con mayor área de cultivo es tierras con pastos naturales, tierras eriazas, tierras en descanso, otros usos de la tierra, montos y bosques entre otros.</p>
+<p>Respecto a cultivos, se tiene a tara, espárragos, palto, maíz, caña de azúcar, arroz, pimiento, papa, entre otros.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

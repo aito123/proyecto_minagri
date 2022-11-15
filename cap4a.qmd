@@ -1,0 +1,272 @@
+---
+title: "Revisión base CAPITULO_4A"
+author: "Santiago Sotelo"
+date: today
+date-format: long
+format: html
+lang: es
+execute: 
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+#| output: false
+
+pacman::p_load(haven, tidyverse, janitor, glue, sf, here, gt, kableExtra, fs)
+# here::i_am(basename(rstudioapi::getActiveDocumentContext()$path))
+here::i_am("cap4a.qmd")
+
+```
+
+## Objetivo
+
+Realizar la unión de la selección base polígonos `QLAB_MIDAGRI_1.gdb (lotesm 1)` y la base tabular `CAPITULO_4A.xlsx` .
+
+## Revisión base polígonos
+
+```{r}
+
+lotesm<-st_read(
+  here("data/lotesm_1/lotesm_1.shp"), 
+  quiet = TRUE) %>% 
+  as.data.frame()
+
+provincias<-sf::st_read(
+  here::here("data/QLAB_MIDAGRI_1.gdb"), 
+  layer = "Provincias", 
+  quiet=TRUE)
+
+
+```
+
+-   La base polígonos tiene 1903 observaciones y 27 variables.
+
+-   Esta base solo incluye los cultivos de interés: papa, maíz, palto (palta), espárrago y caña de azúcar.
+
+-   La unidad de análisis en esta base son los lotes de cada parcela a la fecha *noviembre 2021*.
+
+```{r}
+#| label: tbl-shp
+#| tbl-cap: Número de casos por tipo de sembrío de La Libertad en base polígonos
+
+lotesm %>%  
+  group_by(uso_lt1) %>% 
+  summarise(`Nro de casos en data`= n()) %>% 
+  arrange(desc(`Nro de casos en data`)) %>%  
+  janitor::adorn_totals() %>% 
+  knitr::kable() %>% 
+  kable_styling()%>%
+  row_spec(6,italic=T)
+
+```
+
+En un mapa se pueden graficar de la siguiente manera.
+
+```{r}
+#| label: fig-shp
+#| fig-cap: Mapa de la base polígonos
+
+lotesm %>% 
+  ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(aes(geometry=geometry), fill = "magenta", color = "magenta") + 
+  theme_void() +
+  ggtitle("Lotes de la <span style='color:magenta;'>base polígonos</span>") +
+  theme(plot.title = ggtext::element_markdown())
+
+```
+
+## Revisión base tabular
+
+```{r}
+#| label: import CAPITULO_4A
+
+cap4a<- rio::import(here("data/data_tabular_ena/CAPITULO_4A.xlsx")) %>% 
+  mutate(ORDEN_LOTE = as.character(ORDEN_LOTE),
+         ORDEN_LOTE = str_pad(ORDEN_LOTE, 2, side = "left", pad = "0"),
+         ID_LOTE = str_c(ID_POLI, ORDEN_LOTE)) %>% 
+  dplyr::select(ID_LOTE, ID_PARC = ID_POLI, NRO_LOT = ORDEN_LOTE, 
+                P401, P402_PADRE, P402, P403_MES, P403_ANIO) %>% 
+  distinct(.keep_all = TRUE) %>% 
+  filter(str_detect(P402_PADRE, "PAPA$|MAIZ|PALTA|ESPÁRRAGO|CAÑA DE AZÚCAR"))
+  
+```
+
+-   La base tabular tiene 9916 observaciones y 179 variables.
+
+-   Se encuentran 56 casos duplicados en esta base de datos los cuales se filtrarán.
+
+-   De esta base solo seleccionaremos los cultivos de interés. Aplicando la selección, el número de observaciones se reduce a 3763.
+
+-   La unidad de análisis de la base tabular son los lotes de cada parcela en distintos momentos, por ello se incluye una variable que especifica si la información es acerca del *pasado, presente o futuro*.
+
+```{r}
+#| label: tbl-tabular
+#| tbl-cap: Número de casos por tipo de sembrío según temporalidad de La Libertad en base tabular
+
+cap4a %>%  
+  group_by(P402_PADRE, P401) %>% 
+  summarise(n=n()) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = P401, values_from = n, values_fill = 0) %>% 
+  janitor::adorn_totals("col") %>% 
+  arrange(desc(Total)) %>%  
+  janitor::adorn_totals("row") %>% 
+  knitr::kable() %>% 
+  kable_styling()%>%
+  row_spec(13,italic=T)
+
+```
+
+Respecto a la antigüedad de los datos presentes en la base tabular tenemos que el año más antiguo en la selección data de 1965.
+
+```{r}
+#| label: tbl-tabular2
+#| tbl-cap: Antigüedad de las observaciones en la base tabular
+
+cap4a %>%  
+  mutate(P403_ANIO = Hmisc::cut2(as.numeric(P403_ANIO), g=5)) %>% 
+  group_by(P403_ANIO) %>% 
+  summarise(n=n()) %>% 
+  janitor::adorn_totals("row") %>% 
+  knitr::kable() %>% 
+  kable_styling()%>%
+  row_spec(5,italic=T)
+```
+
+## Unión de las bases
+
+```{r}
+#| label: unión
+
+data_j<- 
+  right_join(cap4a %>% dplyr::select(-ID_LOTE), lotesm, by = c("ID_PARC", "NRO_LOT")) %>%  # change to full_join to know which obs were left out in both sides
+  mutate(
+    P401=case_when(
+      is.na(P401) ~ "PRESENTE",
+      TRUE ~ P401
+    ),
+    P403_MES=case_when(
+      is.na(P403_MES) ~ "11",
+      TRUE ~ P403_MES
+    ),
+    P403_ANIO=case_when(
+      is.na(P403_ANIO) ~ "2021",
+      TRUE ~ P403_ANIO
+    ),
+    RECIENTE=case_when(
+      (P403_MES %in% "09" | P403_MES %in% "10" | P403_MES %in% "11" | 
+         P403_MES %in% "12") & P403_ANIO %in% "2021" ~ 1,
+      P403_ANIO %in% "2022" ~ 1,
+      TRUE ~ 0
+    )
+  ) %>% 
+  relocate(RECIENTE, .after = P403_ANIO)
+```
+
+Al momento de unir las bases, es oportuno considerar que la base polígonos tiene la información sobre los lotes en el presente (nov 2021) y la base tabular tiene información sobre los lotes en el pasado, presente y futuro. Asimismo, se tienen las siguientes observaciones:
+
+-   No todas las observaciones de la base polígonos fueron encontradas en la base tabular, 282 casos no se unieron. Sin embargo, se preservarán estos casos y se considerarán como cultivos en el PRESENTE, en el mes de noviembre, 2021.
+
+-   No todas las observaciones de la base tabular fueron encontradas en la base tabular, 1638 casos no se unieron. Estos casos no se preservarán.
+
+-   Los casos que se unieron satisfactoriamente en la base tabular fueron 2125 observaciones. Sumado a los 282 casos sobrantes de la base poligonal tenemos un total de 2407 observaciones en la base final unida.
+
+De los 2407 casos se tiene lo siguiente:
+
+```{r}
+#| label: tbl-join
+#| tbl-cap: Temporalidad de los lotes de la base unida
+
+data_j %>% 
+  count(P401) %>% 
+  janitor::adorn_totals("row") %>% 
+  knitr::kable() %>% 
+  kable_styling()%>%
+  row_spec(4,italic=T)
+
+```
+
+La @tbl-join muestra que se tiene 1840 observaciones en el presente, lo cual es un 76% de las observaciones totales de la base unida. Asimismo, si quisiéramos saber cuáles son los casos que tienen máximo una antigüedad de tres meses desde que se realizó la encuesta, es decir considerar casos hasta setiembre de 2021, tendríamos lo siguiente:
+
+```{r}
+#| label: tbl-join2
+#| tbl-cap: Antigüedad por año según que tan reciente son los casos en la base unida
+
+data_j %>%  
+  mutate(
+    P403_ANIO = Hmisc::cut2(as.numeric(P403_ANIO), g=3),
+    RECIENTE=case_when(
+      RECIENTE == 1 ~ "Reciente",
+      RECIENTE == 0 ~ "No reciente"
+      )
+    ) %>% 
+  group_by(P403_ANIO, RECIENTE) %>% 
+  summarise(n=n()) %>% 
+  pivot_wider(names_from = RECIENTE, values_from = n, values_fill = 0) %>% 
+  janitor::adorn_totals(c("row", "col")) %>% 
+  knitr::kable() %>% 
+  kable_styling() %>%
+  row_spec(4,italic=T)
+
+```
+
+En la @tbl-join2 podemos observar que la totalidad de valores antes del 2021 son considerados como no recientes. Dentro del 2021, únicamente las observaciones capturadas a partir de setiembre de 2021 son consideradas como recientes lo que nos da un total de 686 observaciones. Las observaciones que se encuentran en 2022, o en el futuro de la encuesta, son también consideradas como recientes, es decir, 14 observaciones.
+
+Si graficamos la base unida según temporalidad podemos ver lo siguiente en comparación con la base polígono original:
+
+```{r}
+#| label: fig-join
+#| fig-cap: Mapa de la base tabular encima de la base polígonos
+#| layout-ncol: 3
+#| column: screen-inset
+#| fig-subcap: 
+#| - En el pasado
+#| - En el presente
+#| - En el futuro
+
+data_j %>% 
+  filter(P401 %in% "PASADO") %>% 
+  ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(data=lotesm, 
+          aes(geometry=geometry), fill = "magenta", color = "magenta") + 
+  geom_sf(aes(geometry=geometry), fill = "blue", color = "blue") + 
+  theme_void() +
+  ggtitle("Lotes de la <span style='color:blue;'>base unida</span> en comparación la <span style='color:magenta;'>base polígonos</span>") +
+  theme(plot.title = ggtext::element_markdown())
+
+data_j %>% 
+  filter(P401 %in% "PRESENTE") %>% 
+  ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(data=lotesm, 
+          aes(geometry=geometry), fill = "magenta", color = "magenta") + 
+  geom_sf(aes(geometry=geometry), fill = "blue", color = "blue") + 
+  theme_void() +
+  ggtitle("Lotes de la <span style='color:blue;'>base unida</span> en comparación la <span style='color:magenta;'>base polígonos</span>") +
+  theme(plot.title = ggtext::element_markdown())
+
+data_j %>% 
+  filter(P401 %in% "FUTURO") %>% 
+  ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(data=lotesm, 
+          aes(geometry=geometry), fill = "magenta", color = "magenta") + 
+  geom_sf(aes(geometry=geometry), fill = "blue", color = "blue") + 
+  theme_void() +
+  ggtitle("Lotes de la <span style='color:blue;'>base unida</span> en comparación la <span style='color:magenta;'>base polígonos</span>") +
+  theme(plot.title = ggtext::element_markdown())
+  
+```
+
+```{r}
+#| eval: false
+
+fs::dir_create(here("data", "data_j"))
+data_j %>% 
+  st_as_sf(sf_column_name = "geometry") %>% 
+  st_write(here("data", "data_j", "data_j.shp"), delete_layer = TRUE, quiet = TRUE)
+```

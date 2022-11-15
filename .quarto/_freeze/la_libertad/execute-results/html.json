@@ -1,0 +1,14 @@
+{
+  "hash": "a56db8218e6c1d39d811de60db160d98",
+  "result": {
+    "markdown": "---\ntitle: \"Mosaico La Libertad\"\nauthor: \"Santiago Sotelo\"\ndate: today\ndate-format: long\nformat: html\nlang: es\nparams:\n  raster: \"la_libertad/imagenes/PLANET_IR572-983.tif\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\n# execute:\n#   echo: false\n#   message: false\n#   warning: false\n\npacman::p_load(haven, tidyverse, janitor, glue, sf, raster, stars, fasterize, here, gt, kableExtra, fs)\nhere::i_am(\"la_libertad.qmd\")\n```\n:::\n\n\n## Problema\n\n1. Cortar el shapefile `lotesm_1` a cada cuadrante.\n1. Convertir cada nuevo shapefile en un ráster utilizando la variable `USO_LOT`.\n    i) Anchura 1958 px\n    i) Altura 1943 px\n    i) Unidades tamaño del ráster de salida: Píxeles\n    i) Tipo de datos de salida: byte\n1. Guardar los ráster en un archivo `.tiff`\n    i) Descartar los cuadrantes que no tienen polígonos de `lotesm_1` dentro.\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmyraster<-raster(here::here(glue(params$raster)))\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ncap4a<- rio::import(here(\"data/data_tabular_ena/CAPITULO_4A.xlsx\")) %>% \n  mutate(ORDEN_LOTE = as.character(ORDEN_LOTE),\n         ORDEN_LOTE = str_pad(ORDEN_LOTE, 2, side = \"left\", pad = \"0\"),\n         ID_LOTE = str_c(ID_POLI, ORDEN_LOTE)) %>% # problema con 00\n  dplyr::select(ID_LOTE, P401, P402, P403_MES, P403_ANIO)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmyshp<-st_read(here(\"data/lotesm_1/lotesm_1.shp\"), quiet = TRUE) %>%  # todos los puntos\n  # left_join(cap4a, by = \"ID_LOTE\") %>% \n  dplyr::select(USO_LOT, geometry) # seleccionar las variables que nos importan\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmyshp2<-st_crop(myshp, myraster) # subset funciona con RasterLayer y stars obj\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning: attribute variables are assumed to be spatially constant throughout all\ngeometries\n```\n:::\n:::\n\n\nEl siguiente loop evita que los ráster que no tienen polígonos dentro se exporten.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nif (nrow(myshp2) == 0){\n\n  print(\"El raster no tiene polígonos dentro.\")\n\n} else {\n  \n  file_name<- str_split(params$raster, pattern = \"[/_IR]\", simplify = TRUE)[,7]\n  \n  rasterlayer <-\n    fasterize(st_cast(myshp2, \"MULTIPOLYGON\"),\n              raster = myraster,\n              field = \"USO_LOT\") # para RasterLayer\n  \n  # para RasterLayer\n  writeRaster(\n    rasterlayer,\n    filename = here::here(glue(\"la_libertad/labels/\", file_name)),\n    format = \"GTiff\",\n    datatype = 'INT1U',\n    options = c(\"COMPRESS=NONE\"),\n    overwrite = TRUE\n  )\n  \n}\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

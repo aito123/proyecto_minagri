@@ -1,0 +1,293 @@
+
+```{r}
+#| label: notas
+#| eval: false
+#| include: false
+
+myraster_st<-read_stars(here::here(glue("la_libertad/imagenes/", params$raster)))
+
+stars<- st_rasterize(st_cast(myshp2, "MULTIPOLYGON"), raster = myraster, field = "USO_LOT") # para stars obj
+
+# para stars obj
+write_stars(
+  stars,
+  dsn=here::here("la_libertad/labels/test_stars.tif"),
+  layer = 1,
+  options = c("driver = GTiff"),
+  type = "Byte"
+)
+
+# stars sonaba interesante porque se comunica mejor con sf pero su calidad
+# de exportación a raster es baja, así que opté por RasterLayer.
+
+crop1<-st_crop(myshp, myraster)
+
+inter<- st_intersects(myshp, myraster)
+
+myshp1<-st_rasterize(myshp)
+
+
+
+
+
+# Convert points to sp (assumes that the sf object is called example_points)
+crop2 <- as(crop1, "Spatial")
+
+# Generate empty raster layer and rasterize points
+example_raster <- 
+  raster(crs = crs(crop2), ext = extent(myraster)) %>% #resolution = c(0.5, 0.5), vals = "USO_LOT",
+  rasterize(crop2, .)
+
+raster::writeRaster(example_raster, "la_libertad/labels/example_raster.tif")
+
+
+myshp2<-raster::
+
+myshp_sp<- as(myshp, "Spatial")
+myshp_r<- raster::rasterize(myshp_sp, myraster, field = "USO_LOT")
+
+crop1<- raster::crop(myshp1, myraster)
+
+
+
+blockSize(r)
+
+
+box = c(xmin = 0, ymin = 0, xmax = 1, ymax = 1)
+pol = st_sfc(st_buffer(st_point(c(.5, .5)), .6))
+pol_sf = st_sf(a=1, geom=pol)
+plot(st_crop(pol, box))
+plot(st_crop(pol_sf, st_bbox(box)))
+# alternative:
+plot(st_crop(pol, xmin = 0, ymin = 0, xmax = 1, ymax = 1))
+
+myshp2<-st_crop(x = myshp, y = myraster, xmin = -79.453202, ymin = -7.188139, xmax = -79.277312, ymax = -7.013597)
+
+
+myshp2<-st_crop(x = myshp, y = st_bbox(myraster)) # solo los puntos en polígono // sf obj
+myshp3<-st_rasterize(myshp2)
+
+resample <- st_warp(myshp3, myraster, use_gdal = TRUE)
+
+myshp.raster<-
+  st_rasterize(myshp2 %>% dplyr::select(value=USO_LOT, geometry), st_as_stars(st_bbox(myraster))) # // stars obj
+
+myshp.raster2<-
+  st_rasterize(myshp2 %>% dplyr::select(value=USO_LOT, geometry)) # // stars obj
+
+ggplot() +
+  # geom_stars(data = myraster) + 
+  # geom_stars(data = test_raster) + # el firme 
+  geom_stars(data = myshp.raster2)
+
+write_stars(
+  myshp.raster, 
+  dsn=here::here("la_libertad/labels/myshp.raster.tif"), 
+  type = "Byte"
+  ) # 354 * 184
+
+
+myshp.raster2<-
+  st_extract(myshp.raster, myraster)
+
+
+
+
+data<- fasterize(st_cast(myshp2, "MULTIPOLYGON"), raster = myraster, field = "USO_LOT")
+
+
+myshp.raster<- raster(myshp)
+
+myshp2<-st_crop(myshp, myraster)
+
+
+# label: rasterize the shp using USO_LOT
+
+# intento 1
+uso_lot<-myshp2 %>% gdal_rasterize(USO_LOT)
+
+r.raster<-raster()
+uso_lot<-myshp2 %>% rasterize(r.raster)
+
+r <- raster(myshp3, res = 1)
+
+myshp3<-st_cast(myshp2, "MULTIPOLYGON")
+
+# intento 2
+
+r <- fasterize(myshp3, r, field = "USO_LOT", fun="sum")
+plot(r)
+
+# intento 3
+test_raster<-read_stars(here::here(glue("la_libertad/labels/572_983.tif")))
+
+plot_intento3<-
+  ggplot() +
+  geom_stars(data=test_raster)
+
+
+
+# intento 4
+intento4<-st_rasterize(myshp2 %>% dplyr::select(value=USO_LOT, geometry))
+
+intento4.1<- mask(intento4, mask = myraster)
+
+plot_intento4<-
+  ggplot() +
+  geom_stars(data=intento4)
+
+write_stars(
+  intento4, 
+  dsn=here::here("la_libertad/labels/test_572_983.tif"), 
+  type = "Byte", 
+  chunk_size = c(1958, 1943)
+  )
+
+# intento 5
+intento5<-st_rasterize(myshp %>% dplyr::select(value=USO_LOT, geometry))
+
+intento5.1 <- intento5
+
+intento5.1[is.na(myraster %>% st_as_stars())] = NA
+
+
+intento5<-rasterize(myshp %>% dplyr::select(value=USO_LOT, geometry))
+
+i5_mask<-mask(intento5, myraster)
+
+p1 <- rbind(c(-180,-20), c(-140,55), c(10, 0), c(-140,-60), c(-180,-20))
+hole <- rbind(c(-150,-20), c(-100,-10), c(-110,20), c(-150,-20))
+p1 <- list(p1, hole)
+p2 <- list(rbind(c(-10,0), c(140,60), c(160,0), c(140,-55), c(-10,0)))
+p3 <- list(rbind(c(-125,0), c(0,60), c(40,5), c(15,-45), c(-125,0)))
+pols <- st_sf(value = rep(1,3),
+              geometry = st_sfc(lapply(list(p1, p2, p3), st_polygon)))
+
+r <- raster(pols, res = 1)
+
+r <- fasterize(pols, r, field = "value", fun="sum")
+plot(r)
+
+# otra parte
+
+regiones<-sf::st_read(here::here("data/QLAB_MIDAGRI_1.gdb"), layer = "Regiones")
+  
+rgb_files<- fs::dir_ls("la_libertad", regexp = "RGB")
+
+rgb_tifs<-
+  rgb_files %>% 
+  map(~.x %>% 
+        raster() %>% 
+        as.data.frame(xy = TRUE)
+      )
+
+rgb_tifs2<-
+  rgb_files[1:2] %>% 
+  map(~.x %>% 
+        raster()
+      )
+
+rgb_total<-
+  rgb_tifs2 %>% 
+  reduce(raster::merge)
+
+rgb_total %>% 
+  as.data.frame(xy = TRUE) %>% 
+  ggplot() +
+  geom_sf(data = regiones) +
+  geom_raster(aes(x = x, y = y, alpha = layer)) + 
+  scale_alpha(range =  c(0.15, 0.65), guide = "none") + 
+  coord_sf()
+
+
+
+writeRaster(rgb_total, filename=here::here("la_libertad/test.tif"), format="GTiff", overwrite=TRUE)
+
+#crop
+rgb_crop<-crop(rgb_total, regiones)
+rgb_crop<-mask(rgb_total, regiones)
+
+rgb_crop %>% 
+  as.data.frame(xy = TRUE) %>% 
+  ggplot() +
+  geom_sf(data = regiones) +
+  geom_raster(aes(x = x, y = y, alpha = layer)) + 
+  scale_alpha(range =  c(0.15, 0.65), guide = "none") + 
+  coord_sf()
+
+writeRaster(rgb_crop, filename=here::here("la_libertad/test_crop.tif"), format="GTiff", overwrite=TRUE)
+
+# más notas
+
+planet_571_983<-
+  sf::st_layers(here::here("data/QLAB_MIDAGRI_1.gdb")) 
+
+sf::read_sf(here::here("la_libertad/PLANET_RGB571-983/PLANET_RGB571-983.tif"))
+
+data<-raster(here::here("la_libertad/PLANET_RGB570-982.tif"))
+data1<-as.data.frame(data, xy = TRUE)
+
+pata<-raster(here::here("la_libertad/PLANET_RGB586-977.tif")) %>% 
+  as.data.frame(xy = TRUE)
+
+ggplot() +
+  geom_raster(data = data1,
+              aes(x = x, y = y, alpha = layer)) + 
+  geom_raster(data = pata,
+            aes(x = x, y = y, alpha = layer)) + 
+  scale_alpha(range =  c(0.15, 0.65), guide = "none") + 
+  coord_quickmap()
+
+# más notas
+
+
+pata<-raster(here::here("la_libertad/PLANET_RGB586-977.tif")) %>% 
+  as.data.frame(xy = TRUE)
+
+
+
+
+p <- ggplot()
+for (i in 1:108) p <- p + geom_raster(data=rgb_tifs[[i]], aes(x = x, y = y, alpha = layer))
+p + 
+  scale_alpha(range =  c(0.15, 0.65), guide = "none") + 
+  coord_quickmap()
+
+
+library(sf)
+library(stars)
+library(ggplot2)
+
+A <- read_stars("C:/Users/aitos/Downloads/CRU.SpringT.2009.2018_EU.tif")
+B <- read_stars("C:/Users/aitos/Downloads/EU Dec Broadleaf.tif")
+
+# First step: Transform B to have the same extent and resolution of A
+B_cropped_resample <- st_warp(B, A, use_gdal = TRUE)
+
+
+# Second step: convert 0 to NA values in your object B (i.e. deciduous forests)
+B_cropped_resample[B_cropped_resample == 0] <- NA # B should contain only NA and 1 values 
+
+
+# Third step: convert B into `sf` object with 'points' geometry
+B_cropped_resample_sf <- st_as_sf(B_cropped_resample, as_points = TRUE, na.rm = TRUE)
+
+
+# Fourth step : extract values of object A with the object `B_cropped_resample_sf`
+C <- st_extract(A, B_cropped_resample_sf) # C is a sf object which contains the 
+# values of A at the corresponding points
+
+# Sixth step: convert 'sf' object back into stars 'object' and split 'sf' point 
+# geometry into two 'stars' dimensions
+C <- st_as_stars(C, name = attr(C, "CRU.SpringT.2009.2018_EU.tif", "geometry"))
+C <- st_sfc2xy(C)
+
+
+# Seventh step: plot the resulting 'stars' object which shows the temperatures (i.e.  
+# values from object A) for each deciduous forest (i.e. locations from object B)
+ggplot2::ggplot() + geom_stars(data = C) +
+  coord_equal()
+
+
+```
+
