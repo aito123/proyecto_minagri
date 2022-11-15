@@ -270,3 +270,5 @@ data_j %>%
   st_as_sf(sf_column_name = "geometry") %>% 
   st_write(here("data", "data_j", "data_j.shp"), delete_layer = TRUE, quiet = TRUE)
 ```
+
+[Descarga la base unida (`.shp`)](https://github.com/aito123/proyecto_minagri/raw/master/data/data_j.zip)
