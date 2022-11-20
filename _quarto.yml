@@ -1,8 +1,14 @@
 project:
   type: website
+
 lang: es
+author: "Santiago Sotelo"
+
 execute:
   freeze: auto  # re-render only when source changes
+  echo: false
+  message: false
+  warning: false
 
 website:
   title: "Proyecto MIDAGRI"
@@ -13,11 +19,14 @@ website:
         text: "Home"
       - text: "Menu"
         menu:
-          - proyecto_minagri.qmd
-          - cap4a.qmd
+          - text: "1. Exploración base polígonos"
+            href: proyecto_minagri.qmd
+          - text: "2. Exploración base tabular"
+            href: cap4a.qmd
+          - text: "3. Limpieza base tabular"
+            href: tabular2.qmd
 
 format:
   html:
-    theme: 
-      light: Litera
+    theme: Litera
     toc: true

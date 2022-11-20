@@ -1,0 +1,411 @@
+---
+title: "Limpieza base tabular"
+date: 18 11 2022
+date-format: long
+---
+
+```{r}
+#| output: false
+#| label: setup
+
+pacman::p_load(knitr, haven, tidyverse, janitor, glue, sf, here, gt, kableExtra, fs)
+
+# mejorar print method gt y data.frame, aplica solo cuando se renderiza.
+knit_print.gt <- function(x, ...) {
+
+  stringr::str_c(
+    "<div style='all:initial';>\n",
+    if(class(x)[1] %in% 'gt_tbl'){gt::as_raw_html(x)}else{gt::as_raw_html(gt(x))},
+    "\n</div>"
+  ) |>
+    knitr::asis_output()
+
+}
+registerS3method(
+  "knit_print", 'gt_tbl', knit_print.gt,
+  envir = asNamespace("gt")
+  # important to overwrite {gt}s knit_print
+)
+
+registerS3method(
+  "knit_print", 'data.frame', knit_print.gt,
+  envir = asNamespace("base")
+  # important to overwrite {data.frame}s knit_print
+)
+
+```
+
+## Objetivo
+
+Realizar una limpieza de la data de la base tabular (`CAPITULO_4A`) tomando en consideración las indicaciones de la reunión con Ph.D. Pedro Achanccaray. se acordó en lo siguiente:
+
+-   No considerar la variable `P401` que data sobre si un cultivo se encuentra en el pasado, presente o futuro dado que sus resultados no son tan confiables.
+-   Se preservarán los casos considerando dos filtros:
+    -   Se tomarán en cuenta los casos desde *enero de 2021* hasta *noviembre de 2021*.
+    -   Se preservarán los cultivos pasados que coincidan con el último cultivo plantado.
+        -   Por ejemplo: si es noviembre 2021 en el lote 1 se plantó papa, y en octubre 2021 en el lote 1 se había plantado papa, entonces se preservarán ambos casos.
+
+## Conceptos
+
+A nivel de análisis se debe tomar en cuenta que existe cierta jerarquía entre las capas que analizaremos:
+
+$$
+Departamento > Provincia > Distrito > Parcela > Lote (cultivo)
+$$
+
+De esta manera, la parcela está compuesta de lotes en los cuales se siembra un solo tipo de cultivo.
+
+## Bases de datos
+
+```{r}
+#| output: false
+
+lotesm<-st_read(
+  here("data/lotesm_1/lotesm_1.shp"), 
+  quiet = TRUE) %>% 
+  as.data.frame()
+
+provincias<-sf::st_read(
+  here::here("data/QLAB_MIDAGRI_1.gdb"), 
+  layer = "Provincias", 
+  quiet=TRUE)
+
+cap4a<- rio::import(here("data/data_tabular_ena/CAPITULO_4A.xlsx")) %>% 
+  mutate(ORDEN_LOTE = as.character(ORDEN_LOTE),
+         ORDEN_LOTE = str_pad(ORDEN_LOTE, 2, side = "left", pad = "0"),
+         ID_LOTE = str_c(ID_POLI, ORDEN_LOTE)) %>% 
+  dplyr::select(ID_LOTE, ID_PARC = ID_POLI, NRO_LOT = ORDEN_LOTE, 
+                P401, P402_PADRE, P402, P403_MES, P403_ANIO) %>% 
+  distinct(.keep_all = TRUE) %>% 
+  filter(str_detect(P402_PADRE, "PAPA$|MAIZ|PALTA|ESPÁRRAGO|CAÑA DE AZÚCAR")) %>% 
+    mutate(
+    RECIENTE=case_when(
+      (P403_MES %in% c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11")) & P403_ANIO %in% "2021" ~ "Entre enero 2021 y noviembre 2021",
+      (P403_MES %in% c("12")) & P403_ANIO %in% "2021" ~ "Entre diciembre 2021 y 2022",
+      P403_ANIO %in% "2022" ~ "Entre diciembre 2021 y 2022",
+      TRUE ~ "Antes de 2021"
+    ),
+    RECIENTE=ordered(as.factor(RECIENTE), levels = c("Antes de 2021", "Entre enero 2021 y noviembre 2021", "Entre diciembre 2021 y 2022"))
+  ) %>% 
+  relocate(RECIENTE, .after = P403_ANIO)
+
+```
+
+### Base polígono
+
+Primero importamos la base polígono que es una selección de los cultivos de interés de la capa `lotesm 1`. Para descargar la base polígono haga click [aquí](https://github.com/aito123/proyecto_minagri/raw/master/data/lotesm_1.zip). Esta base tiene las siguientes características:
+
+```{r}
+#| label: tbl-poli1
+#| tbl-cap: Tipos de cultivos en la base polígono
+
+
+lotesm %>% 
+  count(uso_lt1) %>% 
+  janitor::adorn_totals("row") %>% 
+  gt() %>% 
+  cols_label(
+      uso_lt1 =  md('**Uso lote**')
+    ) %>% 
+  cols_width(uso_lt1 ~ px(300)) %>%  #retomar el control de tus tablas.
+  tab_options(
+    data_row.padding = px(3)
+  ) %>% 
+  opt_stylize(style = 6, color = 'gray') %>% 
+  tab_style(
+    style = list(
+      cell_text(weight = "bold")
+      ),
+    locations = cells_body(
+      rows = uso_lt1 %in% "Total"
+    )
+  ) # se podría crear una plantilla de tabla. ciertamente
+
+```
+
+Es una **base de datos con 1903 observaciones** y 27 variables con 5 tipos de cultivo.
+
+### Base tabular
+
+La base tabular es una data en formato `.xlsx` que contiene la información histórica de los cultivos sembrados en los lotes tanto en el pasado, presente y lo esperado en el futuro. Para descargar la base tabular haga click [aquí](https://github.com/aito123/proyecto_minagri/raw/master/data/data_tabular_ena/CAPITULO_4A.xlsx).
+
+Antes de desplegar las características de la base tabular, se deben atender las siguientes cuestiones:
+
+-   La base tabular tiene 9916 observaciones y 179 variables, de los cuales 56 observaciones son duplicadas por lo que se filtrarán del total.
+
+-   Son de nuestro interés filtrar únicamente los cultivos del estudio (caña de azúcar, espárragos, maíz, palto, papa), porque aplicando la selección nos quedamos con 3763 observaciones.
+
+A continuación, esta base tiene las siguientes características:
+
+```{r}
+#| label: tbl-tab1
+#| tbl-cap: Tipos de cultivos en la base tabular
+
+
+cap4a %>% 
+  count(RECIENTE) %>% 
+  janitor::adorn_totals("row") %>% 
+  gt() %>% 
+  cols_label(
+      RECIENTE =  md('**¿Qué tan reciente?**')
+    ) %>% 
+  cols_width(RECIENTE ~ px(400)) %>%  #retomar el control de tus tablas.
+  tab_options(
+    data_row.padding = px(3)
+  ) %>% 
+  opt_stylize(style = 6, color = 'gray') %>% 
+  tab_style(
+    style = list(
+      cell_text(weight = "bold")
+      ),
+    locations = cells_body(
+      rows = RECIENTE %in% "Total"
+    )
+  )
+
+
+```
+
+Es una **base de datos con 3763 observaciones** de las cuales 1695 corresponden a nuestro periodo temporal de interés, por lo que filtraremos únicamente esos casos.
+
+## Unión base de datos
+
+```{r}
+data_j<-
+  cap4a %>% 
+  filter(RECIENTE %in% "Entre enero 2021 y noviembre 2021") %>% 
+  dplyr::select(-ID_LOTE) %>% 
+  full_join(lotesm, by = c("ID_PARC", "NRO_LOT")) %>% 
+  relocate(ID_LOTE, .before = everything()) %>% 
+  mutate(
+    ID_LOTE = case_when(
+      is.na(ID_LOTE) ~ str_c(ID_PARC, NRO_LOT),
+      TRUE ~ ID_LOTE
+      ),
+    P401=case_when(
+      is.na(P401) ~ "PRESENTE",
+      TRUE ~ P401
+    ),
+    P403_MES=case_when(
+      is.na(P403_MES) ~ "11",
+      TRUE ~ P403_MES
+    ),
+    P403_ANIO=case_when(
+      is.na(P403_ANIO) ~ "2021",
+      TRUE ~ P403_ANIO
+    )
+    )
+
+```
+
+Se unirá cada observación lote de la base tabular con su respectiva geometria georreferenciada. En caso el lote aparezca múltiples veces en la base tabular (por ejemplo con información sobre su presente y su pasado) entonces se duplicará su geometría para estos casos.
+
+Luego de la unión de las bases de datos se tienen 2490 observaciones con las siguientes características:
+
+```{r}
+#| label: tbl-join1
+#| tbl-cap: Observaciones presentes en la base tabular y en la base polígono
+
+data_j %>% 
+  count(cap4a=!is.na(RECIENTE), lotesm1=!st_is_empty(geometry)) %>% 
+  janitor::adorn_totals("row") %>% 
+  mutate(across(
+    where(is.character), 
+    ~ case_when(. %in% "TRUE"~"Sí", . %in% "FALSE"~"No", TRUE~.)
+    )) %>% 
+  gt() %>%
+  cols_label(
+      cap4a =  md('**Base tabular**'),
+      lotesm1 =  md('**Base polígono**')
+    ) %>% 
+  cols_width(n ~ px(100)) %>%  #retomar el control de tus tablas.
+  tab_options(
+    data_row.padding = px(3)
+  ) %>% 
+  opt_stylize(style = 6, color = 'gray') %>% 
+  tab_style(
+    style = list(
+      cell_text(weight = "bold")
+      ),
+    locations = cells_body(
+      rows = cap4a %in% "Total"
+    )
+  )
+  
+```
+
+En la @tbl-join1 se puede observar que de los 1695 observaciones de la base tabular correspondientes a nuestros cultivos de interés, 526 no se encuentran en la base polígono por lo que no cuentan con una geometría georreferenciada.
+
+Es así que nos quedamos con los 1169 casos que se encuentran tanto en la base tabular como en la poligonal, y también preservaremos los 795 casos que únicamente se encuentran en la base polígono dado que corresponden a noviembre 2021 (presente) con **un total de 1964 casos**.
+
+### Filtrar por continuidad
+
+```{r}
+id_dup<-
+  data_j %>% 
+  filter(
+    (!is.na(RECIENTE) & !st_is_empty(geometry)) | (!st_is_empty(geometry))
+    ) %>% 
+  group_by(ID_LOTE) %>% 
+  count() %>% 
+  filter(n > 1) %>% 
+  select(ID_LOTE) %>% 
+  mutate(unico="no")
+
+id_disc<-
+  data_j %>% 
+  filter(
+    (!is.na(RECIENTE) & !st_is_empty(geometry)) | (!st_is_empty(geometry))
+    ) %>% 
+  left_join(id_dup, by = "ID_LOTE") %>% 
+  mutate(
+    unico=case_when(
+      is.na(unico) ~ "si",
+      TRUE ~ unico
+    ),
+    P402_PADRE=case_when(
+      is.na(P402_PADRE) ~ uso_lt1,
+      TRUE ~ P402_PADRE
+    ),
+    P402_PADRE=case_when(
+      P402_PADRE %in% "Caña de azucar" ~ "CAÑA DE AZÚCAR",
+      P402_PADRE %in% "Esparrago" ~ "ESPÁRRAGO",
+      P402_PADRE %in% "Maíz" ~ "MAIZ",
+      P402_PADRE %in% "Palto" ~ "PALTA",
+      P402_PADRE %in% "Papa" ~ "PAPA",
+      TRUE ~ P402_PADRE
+    )
+  ) %>% 
+  #rutina para trabajar con no unicos, max tres repeticiones, regex por el maiz
+  #luego dropear, solos habían dos con tres repeticiones y tienen el mismo cultivo a través del tiempo.
+  mutate(
+    P402_PADRE_2 = case_when(
+      P402_PADRE %in% c("CAÑA DE AZÚCAR (PARA AZUCAR)", "CAÑA DE AZÚCAR (PARA FRUTA)") ~ "CAÑA DE AZÚCAR",
+      P402_PADRE %in% c("MAIZ AMARILLO", "MAIZ AMILACEO", "MAIZ CHALA", "MAIZ CHOCLO", "MAIZ MORADO") ~ "MAIZ",
+      TRUE ~ P402_PADRE
+    )
+  ) %>% 
+  count(ID_LOTE, unico, P402_PADRE_2) %>% 
+  
+  group_by(ID_LOTE) %>% 
+  mutate(id = row_number(ID_LOTE), .before=everything()) %>%
+  ungroup() %>% 
+  
+  filter(n %in% 1 & unico %in% "no") %>% 
+  
+  arrange(unico, ID_LOTE) %>% 
+  ##11 tienen discrepancia de cultivos
+  distinct(ID_LOTE) %>% 
+  mutate(id_disc="si")
+
+data_j2<- 
+  data_j %>% 
+  filter(
+    (!is.na(RECIENTE) & !st_is_empty(geometry)) | (!st_is_empty(geometry))
+    ) %>% 
+  #identificando unicos y estandarizando P402_PADRE
+  left_join(id_dup, by = "ID_LOTE") %>% 
+  left_join(id_disc, by = "ID_LOTE") %>% 
+  mutate(
+    unico=case_when(
+      is.na(unico) ~ "si",
+      TRUE ~ unico
+    ),
+    id_disc=case_when(
+      is.na(id_disc) ~ "no",
+      TRUE ~ id_disc
+    ),
+    P402_PADRE=case_when(
+      is.na(P402_PADRE) ~ uso_lt1,
+      TRUE ~ P402_PADRE
+    ),
+    P402_PADRE=case_when(
+      P402_PADRE %in% "Caña de azucar" ~ "CAÑA DE AZÚCAR",
+      P402_PADRE %in% "Esparrago" ~ "ESPÁRRAGO",
+      P402_PADRE %in% "Maíz" ~ "MAIZ",
+      P402_PADRE %in% "Palto" ~ "PALTA",
+      P402_PADRE %in% "Papa" ~ "PAPA",
+      TRUE ~ P402_PADRE
+    )
+  ) %>% 
+  #rutina para trabajar con no unicos, max tres repeticiones, regex por el maiz
+  #luego dropear, solos habían dos con tres repeticiones y tienen el mismo cultivo a través del tiempo.
+  mutate(
+    P402_PADRE_2 = case_when(
+      P402_PADRE %in% c("CAÑA DE AZÚCAR (PARA AZUCAR)", "CAÑA DE AZÚCAR (PARA FRUTA)") ~ "CAÑA DE AZÚCAR",
+      P402_PADRE %in% c("MAIZ AMARILLO", "MAIZ AMILACEO", "MAIZ CHALA", "MAIZ CHOCLO", "MAIZ MORADO") ~ "MAIZ",
+      TRUE ~ P402_PADRE
+    )
+  ) %>% 
+  arrange(ID_LOTE, P403_MES) %>% 
+  
+  #id agrupado
+  group_by(ID_LOTE) %>% 
+  mutate(id = row_number(ID_LOTE), .before=everything()) %>% 
+  ungroup() %>% 
+  
+  #ahora sé que las id==1 y id_disc=="si" son los que tienen que irse.
+  filter(!(id %in% 1 & id_disc %in% "si")) #queda.
+
+```
+
+Por último, como parte de las indicaciones en la limpieza de datos, se menciona que solo se deben presentar la información de los lotes en el pasado (previo a nov. 2021) que coincidan con el cultivo presente (nov. 2021).
+
+-   Por ejemplo: si el lote 1 tiene una siembra de maíz en noviembre 2021, y también tuvo una siembra en setiembre y octubre 2021 de maíz, entonces se preservarán los tres casos.
+
+-   En cambio, si el lote 1 sembró maíz en nov. 2021, pero sembró papa en oct. 2021, entonces se retirará el caso de octubre 2021.
+
+Luego de aplicado el filtro tenemos lo siguiente:
+
+```{r}
+#| label: tbl-join2
+#| tbl-cap: Base unida final por mes según cultivo (2021)
+
+data_j2 %>% 
+  count(P403_MES, P402_PADRE_2) %>% 
+  pivot_wider(names_from = P402_PADRE_2, values_from = n, values_fill = 0) %>% 
+  janitor::adorn_totals(c("row", "col")) %>% 
+  gt() %>%
+  cols_label(
+      P403_MES =  md('MES')
+    ) %>% 
+  cols_width(Total ~ px(100)) %>%  #retomar el control de tus tablas.
+  tab_options(
+    data_row.padding = px(3)
+  ) %>% 
+  opt_stylize(style = 6, color = 'gray') %>% 
+  tab_style(
+    style = list(
+      cell_text(weight = "bold")
+      ),
+    locations = cells_body(
+      columns = Total
+    )
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_text(weight = "bold")
+      ),
+    locations = cells_body(
+      rows = P403_MES %in% "Total"
+    )
+  )
+  
+```
+
+Como podemos ver, solo se retiraron 11 casos lo cual nos da **una totalidad de 1953 observaciones** situadas en los meses de enero, febrero, marzo, abril, mayo, junio, julio, agosto, setiembre, octubre y noviembre del 2021.
+
+La mayoría de observaciones pertenecen a noviembre del 2021, principalmente de palta, seguido de espárrago.
+
+```{r}
+#| eval: false
+
+fs::dir_create(here("data", "data_j2"))
+data_j2 %>% 
+  select(-c(id, unico, id_disc, P402_PADRE_2)) %>% 
+  st_as_sf(sf_column_name = "geometry") %>% 
+  st_write(here("data", "data_j2", "data_j2.shp"), delete_layer = TRUE, quiet = TRUE)
+
+```
+
+Para descargar la base unida final haga click [aquí](https://github.com/aito123/proyecto_minagri/raw/master/data/data_j2.zip).
