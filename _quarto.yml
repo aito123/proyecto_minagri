@@ -25,6 +25,8 @@ website:
             href: cap4a.qmd
           - text: "3. Limpieza base tabular"
             href: tabular2.qmd
+          - text: "4. Exportación de las bases"
+            href: exporta3.qmd
 
 format:
   html:

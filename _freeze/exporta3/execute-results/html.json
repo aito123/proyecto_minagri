@@ -1,0 +1,16 @@
+{
+  "hash": "4ffcecde1ddbd10907bdd9c5bc4f14bd",
+  "result": {
+    "markdown": "---\ntitle: \"Exportación de los polígonos\"\ndate: 24 11 2022\ndate-format: long\n---\n\n\n## Exportación\n\nEn la última reunión se acordó con el prof. Pedro Achancaray que las observaciones se exportarían en 11 bases de datos correspondientes a cada mes en cuestión (desde enero hasta noviembre) de manera que cada base acumulará los meses precedentes.\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\nSi visualizáramos los lotes de cultivo en comparación con los cuadrantes rásters veremos lo siguiente:\n\n\n::: {.cell}\n::: {.cell-output-display}\n![Lotes mes 01 / Enero 2021](exporta3_files/figure-html/fig-rasterloop-1.png){#fig-rasterloop width=672}\n:::\n:::\n",
+    "supporting": [
+      "exporta3_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

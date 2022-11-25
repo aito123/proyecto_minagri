@@ -1,0 +1,98 @@
+---
+title: "Exportación de los polígonos"
+date: 24 11 2022
+date-format: long
+---
+
+## Exportación
+
+En la última reunión se acordó con el prof. Pedro Achancaray que las observaciones se exportarían en 11 bases de datos correspondientes a cada mes en cuestión (desde enero hasta noviembre) de manera que cada base acumulará los meses precedentes.
+
+```{r}
+#| output: false
+#| label: setup
+
+pacman::p_load(raster, stars, fasterize, knitr, haven, tidyverse, janitor, glue, sf, here, gt, kableExtra, fs, glue)
+
+data_j2<-st_read(
+  here("data/data_j2/data_j2.shp"), 
+  quiet = TRUE) %>% 
+  as.data.frame()
+
+provincias<-sf::st_read(
+  here::here("data/QLAB_MIDAGRI_1.gdb"), 
+  layer = "Provincias", 
+  quiet=TRUE)
+
+raster_import<- function(file){
+    st_as_sf(st_as_sfc(st_bbox(raster(file)))) %>% 
+      mutate(name=sub(".*PLANET_IR *(.*?) *.tif*", "\\1", file)) %>% 
+      rename(geometry=x)
+}
+
+myraster4<-
+  fs::dir_ls("la_libertad/imagenes/IR/") %>% 
+  map(raster_import)
+
+```
+
+```{r}
+#| eval: false
+
+# loop
+export_data_j2<- function(number){
+  
+  fs::dir_create(here("data", glue("data_j2_", number)))
+  data_j2 %>% 
+    filter(as.numeric(P403_MES) <= number) %>% 
+    st_as_sf(sf_column_name = "geometry") %>% 
+    st_write(here("data", glue("data_j2_", number), 
+                  glue("data_j2_", number, ".shp")), 
+             delete_layer = TRUE, quiet = TRUE) 
+
+}
+
+c(1:11) %>% 
+  walk(export_data_j2)
+
+```
+
+```{r}
+
+import_data_j2<- function(number){
+  
+  data_j2 %>% 
+    filter(as.numeric(P403_MES) <= number)
+
+}
+
+data_j2_loop<- 
+  c(1:11) %>% 
+  map(import_data_j2)
+
+```
+
+Si visualizáramos los lotes de cultivo en comparación con los cuadrantes rásters veremos lo siguiente:
+
+```{r}
+#| label: fig-rasterloop
+#| fig-cap: Lotes mes 01 / Enero 2021
+
+#plots con raster borders
+p <- ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent")
+
+for (i in 1:108) p <- p + 
+  geom_sf(data=myraster4[[i]], alpha = 0.5) + 
+  geom_sf_text(data = myraster4[[i]], aes(label = name), size = 2) + 
+  theme_void()
+
+p + geom_sf(
+  data=data_j2_loop[[1]], 
+  aes(geometry=geometry), 
+  fill = "magenta", color = "magenta"
+  )
+
+# dos posibilidades de solución, o coloreas el cuadrante (podrias reducir la lista) o le haces un buffer para que se vea.
+
+```
