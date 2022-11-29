@@ -534,7 +534,24 @@ crs(my_rast) = "EPSG:26912" # set CRS, si lo cambia.
 
 
 
-
+ggplot() + 
+  geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+  geom_sf(data=myraster5, aes(fill=within), alpha = 0.5, show.legend = TRUE) + 
+  geom_sf(data=data_j2_loop[[num]], 
+          aes(geometry=geometry, color = "Lotes de cultivo"), 
+          size = 3, show.legend = TRUE) +
+  geom_sf_text(data = myraster5, aes(label = name), size = 6) +
+  scale_color_manual(values = "magenta") +
+  scale_fill_manual(values = c("grey", "seagreen3"), labels = c("No", "Sí")) +
+  theme_void() + 
+  coord_sf(default_crs = sf::st_crs(4326), crs = sf::st_crs(4326)) +
+  labs(colour = "Polígonos") +
+  guides(fill=guide_legend(title="Descargar")) + #fill = "Descargar", , color=guide_legend(title="Lotes de cultivo")
+  theme(legend.key.size = unit(2, 'cm'), #change legend key size
+        legend.key.height = unit(2, 'cm'), #change legend key height
+        legend.key.width = unit(2, 'cm'), #change legend key width
+        legend.title = element_text(size=18), #change legend title font size
+        legend.text = element_text(size=16)) #change legend text font size
 
 
 

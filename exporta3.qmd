@@ -8,6 +8,18 @@ execute:
     message: false
 ---
 
+```{r}
+# debería poner aca la explicación sobre como descargar o en la parte de abajo.
+# https://minagri-geoespacial.users.earthengine.app/view/mosaicosv3
+# ok // descargué el cuadrante faltante.
+# ok // Ponerle una legenda al magenta.
+# Pedro me ha encargado comparar imagenes de tres meses de un mismo cuadrante para ver si varían las imagenes (EN COLA PEDIDO)
+# ok // ME Dijo en todo caso desde abril, no te vayas a olvidar que noviembre ya esta.
+# hacer que lo suban al drive en carpetas por mes dividio IR y RGB.
+# Se podría hacer de manera sincronica jornada 1 hora.
+```
+
+
 ## Exportación
 
 En la última reunión se acordó con el prof. Pedro Achancaray que las observaciones se exportarían en 11 bases de datos correspondientes a cada mes en cuestión (desde enero hasta noviembre) de manera que cada base acumulará los meses precedentes.
@@ -77,7 +89,7 @@ data_j2_loop<-
 
 ```
 
-Si visualizáramos los lotes de cultivo en comparación con los cuadrantes rásters veremos lo siguiente:
+Si visualizáramos los lotes de cultivo (en color magenta) en comparación con los cuadrantes rásters podríamos ver en qué cuadrantes específicamente se encuentra cada lote de cultivo y descargar únicamente ese cuadrante (en verde). Es así como tenemos los siguientes resultados:
 
 ```{r}
 
@@ -98,13 +110,14 @@ multiplots<-function(num){
     geom_sf(data = provincias, size = 0.05, fill = "transparent") +
     geom_sf(data=myraster5, aes(fill=within), alpha = 0.5) + 
     geom_sf(data=data_j2_loop[[num]], 
-            aes(geometry=geometry), 
-            fill = "magenta", color = "magenta", size = 3) +
+            aes(geometry=geometry, color = "Lotes de cultivo"), 
+            fill = "magenta", size = 3) +
     geom_sf_text(data = myraster5, aes(label = name), size = 6) +
     scale_fill_manual(values = c("grey", "seagreen3"), labels = c("No", "Sí")) +
+    scale_color_manual(values = "magenta") +
     theme_void() + 
     coord_sf(default_crs = sf::st_crs(4326), crs = sf::st_crs(4326)) +
-    guides(fill=guide_legend(title="Descargar")) +
+    guides(fill=guide_legend(title="Descargar"), color=guide_legend(title="Polígonos")) +
     theme(legend.key.size = unit(2, 'cm'), #change legend key size
           legend.key.height = unit(2, 'cm'), #change legend key height
           legend.key.width = unit(2, 'cm'), #change legend key width
@@ -139,10 +152,63 @@ multiplots<-function(num){
 # era cuestion de aumentar las dimensiones fig un poco mas.
 knitr::opts_chunk$set(fig.retina = 1)
 
-c(1:11) %>%
+c(1:11) %>% #1:11
   map(multiplots)-> all_plots
 
 walk(all_plots, print)
 
 ```
 
+## Indicaciones para descargar cuadrantes
+
+Ahora que hemos identificado los cuadrantes a descargar (resaltados en verde), se dividirá entre los practicantes disponibles la tarea de descargar estos cuadrantes por mes desde la página del MIDAGRI. Para ingresar al enlace haga click [aquí](https://minagri-geoespacial.users.earthengine.app/view/mosaicosv3).
+
+Esta página veremos lo siguiente:
+
+```{r}
+knitr::include_graphics("capturas/captura1.png")
+```
+
+En la interfaz del GEOMIDAGRI debemos concentrarnos en dos aspectos:
+-   Primero, en el panel de la izquierda deben encontrarse seleccionadas las siguientes casillas:
+    -   Capas Base: Dep, Cuadrante
+    -   En la parte de "seleccione el mosaico elegir el mes/año en cuestión.
+-   Segundo, en la parte superior se encuentra una barra de búsqueda en la que ingresaremos **La Libertad, Perú**
+
+A continuación, un ejemplo de los pasos mencionados para el mes de noviembre 2021:
+
+```{r}
+
+knitr::include_graphics("capturas/captura2.png")
+
+```
+
+Ahora bien, debemos hacer click al cuadrado dentro de la Libertad que corresponde según el mes asignado, es decir, los cuadrados que se encuentran resaltados en verde. Cuando seleccionemos uno de los cuadrantes nos aparecerán los siguientes botones a los cuales debemos hacer click:
+
+```{r}
+#| fig-cap: Nótese que primero se seleccionó el cuadrante que se encuentra resaltado en azul y luego aparecieron los botones.
+
+knitr::include_graphics("capturas/captura3.png")
+
+```
+
+Una vez realizado click a los dos botones que se han resaltado en verde, se descargarán dos archivos zipeados con una imagen en formato `.tif`, una imagen tendrá la nomenclatura **IR** en su nombre y la otra tendrá **RGB**. Por ejemplo, en el caso anterior, tendríamos dos archivos denominados
+-   `PLANET_IR571-981.tif`
+-   `PLANET_RGB571-981.tif`
+
+:::{.callout-important collapse=false appearance='default' icon=true}
+## Importante
+
+Es necesario que haga unzip a los archivos descargados de modo que se extraiga la imagen que se encuentra dentro de la carpeta zipeada descargada.
+
+Luego de ello, subir las imágenes a la carpeta destino en el drive Qlab en el siguiente [link](https://drive.google.com/drive/folders/15PaOoJwxg5cwouWohJ0zJPDd_3KLpeUP)
+
+:::
+
+Para subir los archivos a la carpeta en el drive Qlab ubicar el mes asignado y dentro de la carpeta imagenes subir a la carpeta IR los archivos con esa nomenclatura y de la misma manera a la carpeta RGB. Por ejemplo, si tuviera una imagen IR (e.g `PLANET_IR571-981.tif`) para el mes octubre seguiría la siguiente ruta:
+
+```{r}
+
+knitr::include_graphics("capturas/captura4.png")
+
+```

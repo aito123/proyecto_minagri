@@ -119,6 +119,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#exportación" id="toc-exportación" class="nav-link active" data-scroll-target="#exportación">Exportación</a></li>
+  <li><a href="#indicaciones-para-descargar-cuadrantes" id="toc-indicaciones-para-descargar-cuadrantes" class="nav-link" data-scroll-target="#indicaciones-para-descargar-cuadrantes">Indicaciones para descargar cuadrantes</a></li>
   </ul>
 </nav>
     </div>
@@ -153,6 +154,9 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<div class="cell">
+
+</div>
 <section id="exportación" class="level2">
 <h2 class="anchored" data-anchor-id="exportación">Exportación</h2>
 <p>En la última reunión se acordó con el prof. Pedro Achancaray que las observaciones se exportarían en 11 bases de datos correspondientes a cada mes en cuestión (desde enero hasta noviembre) de manera que cada base acumulará los meses precedentes.</p>
@@ -165,7 +169,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 
 </div>
-<p>Si visualizáramos los lotes de cultivo en comparación con los cuadrantes rásters veremos lo siguiente:</p>
+<p>Si visualizáramos los lotes de cultivo (en color magenta) en comparación con los cuadrantes rásters podríamos ver en qué cuadrantes específicamente se encuentra cada lote de cultivo y descargar únicamente ese cuadrante (en verde). Es así como tenemos los siguientes resultados:</p>
 <div class="cell">
 
 </div>
@@ -261,6 +265,58 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </figure>
+</div>
+</section>
+<section id="indicaciones-para-descargar-cuadrantes" class="level2">
+<h2 class="anchored" data-anchor-id="indicaciones-para-descargar-cuadrantes">Indicaciones para descargar cuadrantes</h2>
+<p>Ahora que hemos identificado los cuadrantes a descargar (resaltados en verde), se dividirá entre los practicantes disponibles la tarea de descargar estos cuadrantes por mes desde la página del MIDAGRI. Para ingresar al enlace haga click <a href="https://minagri-geoespacial.users.earthengine.app/view/mosaicosv3">aquí</a>.</p>
+<p>Esta página veremos lo siguiente:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="capturas/captura1.png" class="img-fluid" width="2155"></p>
+</div>
+</div>
+<p>En la interfaz del GEOMIDAGRI debemos concentrarnos en dos aspectos: - Primero, en el panel de la izquierda deben encontrarse seleccionadas las siguientes casillas: - Capas Base: Dep, Cuadrante - En la parte de “seleccione el mosaico elegir el mes/año en cuestión. - Segundo, en la parte superior se encuentra una barra de búsqueda en la que ingresaremos <strong>La Libertad, Perú</strong></p>
+<p>A continuación, un ejemplo de los pasos mencionados para el mes de noviembre 2021:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="capturas/captura2.png" class="img-fluid" width="2149"></p>
+</div>
+</div>
+<p>Ahora bien, debemos hacer click al cuadrado dentro de la Libertad que corresponde según el mes asignado, es decir, los cuadrados que se encuentran resaltados en verde. Cuando seleccionemos uno de los cuadrantes nos aparecerán los siguientes botones a los cuales debemos hacer click:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Nótese que primero se seleccionó el cuadrante que se encuentra resaltado en azul y luego aparecieron los botones.</figcaption><p></p>
+<p><img src="capturas/captura3.png" class="img-fluid figure-img" width="2160"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Una vez realizado click a los dos botones que se han resaltado en verde, se descargarán dos archivos zipeados con una imagen en formato <code>.tif</code>, una imagen tendrá la nomenclatura <strong>IR</strong> en su nombre y la otra tendrá <strong>RGB</strong>. Por ejemplo, en el caso anterior, tendríamos dos archivos denominados - <code>PLANET_IR571-981.tif</code> - <code>PLANET_RGB571-981.tif</code></p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Importante
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Es necesario que haga unzip a los archivos descargados de modo que se extraiga la imagen que se encuentra dentro de la carpeta zipeada descargada.</p>
+<p>Luego de ello, subir las imágenes a la carpeta destino en el drive Qlab en el siguiente <a href="https://drive.google.com/drive/folders/15PaOoJwxg5cwouWohJ0zJPDd_3KLpeUP">link</a></p>
+</div>
+</div>
+</div>
+<p>Para subir los archivos a la carpeta en el drive Qlab ubicar el mes asignado y dentro de la carpeta imagenes subir a la carpeta IR los archivos con esa nomenclatura y de la misma manera a la carpeta RGB. Por ejemplo, si tuviera una imagen IR (e.g <code>PLANET_IR571-981.tif</code>) para el mes octubre seguiría la siguiente ruta:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="capturas/captura4.png" class="img-fluid" width="1296"></p>
+</div>
 </div>
 
 
