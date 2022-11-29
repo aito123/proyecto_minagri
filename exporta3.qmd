@@ -2,6 +2,10 @@
 title: "Exportación de los polígonos"
 date: 24 11 2022
 date-format: long
+fig-cap-location: top
+execute: 
+    warning: false
+    message: false
 ---
 
 ## Exportación
@@ -16,8 +20,7 @@ pacman::p_load(raster, stars, fasterize, knitr, haven, tidyverse, janitor, glue,
 
 data_j2<-st_read(
   here("data/data_j2/data_j2.shp"), 
-  quiet = TRUE) %>% 
-  as.data.frame()
+  quiet = TRUE)
 
 provincias<-sf::st_read(
   here::here("data/QLAB_MIDAGRI_1.gdb"), 
@@ -25,14 +28,16 @@ provincias<-sf::st_read(
   quiet=TRUE)
 
 raster_import<- function(file){
-    st_as_sf(st_as_sfc(st_bbox(raster(file)))) %>% 
-      mutate(name=sub(".*PLANET_IR *(.*?) *.tif*", "\\1", file)) %>% 
-      rename(geometry=x)
+  st_as_sf(st_as_sfc(st_bbox(read_stars(file, crs = 4326)))) %>% 
+    mutate(name=sub(".*PLANET_IR *(.*?) *.tif*", "\\1", file)) %>% 
+    rename(geometry=x)
 }
 
 myraster4<-
   fs::dir_ls("la_libertad/imagenes/IR/") %>% 
-  map(raster_import)
+  map(raster_import) %>% 
+  reduce(bind_rows) %>% 
+  st_as_sf(sf_column_name = "geometry")
 
 ```
 
@@ -75,24 +80,69 @@ data_j2_loop<-
 Si visualizáramos los lotes de cultivo en comparación con los cuadrantes rásters veremos lo siguiente:
 
 ```{r}
-#| label: fig-rasterloop
-#| fig-cap: Lotes mes 01 / Enero 2021
 
-#plots con raster borders
-p <- ggplot() + 
-  geom_sf(data = provincias, size = 0.05, fill = "transparent")
+multiplots<-function(num){
+  
+  myraster5 <- 
+    myraster4 %>% 
+    mutate(
+      within=st_contains(
+        geometry, 
+        data_j2_loop[[num]]
+        ) %>% 
+        lengths > 0
+    )
+  
+  # pp<-
+    ggplot() + 
+    geom_sf(data = provincias, size = 0.05, fill = "transparent") +
+    geom_sf(data=myraster5, aes(fill=within), alpha = 0.5) + 
+    geom_sf(data=data_j2_loop[[num]], 
+            aes(geometry=geometry), 
+            fill = "magenta", color = "magenta", size = 3) +
+    geom_sf_text(data = myraster5, aes(label = name), size = 6) +
+    scale_fill_manual(values = c("grey", "seagreen3"), labels = c("No", "Sí")) +
+    theme_void() + 
+    coord_sf(default_crs = sf::st_crs(4326), crs = sf::st_crs(4326)) +
+    guides(fill=guide_legend(title="Descargar")) +
+    theme(legend.key.size = unit(2, 'cm'), #change legend key size
+          legend.key.height = unit(2, 'cm'), #change legend key height
+          legend.key.width = unit(2, 'cm'), #change legend key width
+          legend.title = element_text(size=18), #change legend title font size
+          legend.text = element_text(size=16)) #change legend text font size
+  
+  # print(pp)
+  # cat('\n\n')
+}
 
-for (i in 1:108) p <- p + 
-  geom_sf(data=myraster4[[i]], alpha = 0.5) + 
-  geom_sf_text(data = myraster4[[i]], aes(label = name), size = 2) + 
-  theme_void()
 
-p + geom_sf(
-  data=data_j2_loop[[1]], 
-  aes(geometry=geometry), 
-  fill = "magenta", color = "magenta"
-  )
-
-# dos posibilidades de solución, o coloreas el cuadrante (podrias reducir la lista) o le haces un buffer para que se vea.
 
 ```
+
+```{r, echo = FALSE, results = 'asis'}
+#| label: fig-rasterloop
+#| fig-cap: Lotes según mes 2021
+#| fig-subcap:
+#| - Enero 01
+#| - Febrero 02
+#| - Marzo 03
+#| - Abril 04
+#| - Mayo 05
+#| - Junio 06
+#| - Julio 07
+#| - Agosto 08
+#| - Setiembre 09
+#| - Octubre 10
+#| - Noviembre 11
+#| fig-width: 40
+#| fig-height: 37.808
+# era cuestion de aumentar las dimensiones fig un poco mas.
+knitr::opts_chunk$set(fig.retina = 1)
+
+c(1:11) %>%
+  map(multiplots)-> all_plots
+
+walk(all_plots, print)
+
+```
+
