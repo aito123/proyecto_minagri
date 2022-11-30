@@ -19,7 +19,6 @@ execute:
 # Se podría hacer de manera sincronica jornada 1 hora.
 ```
 
-
 ## Exportación
 
 En la última reunión se acordó con el prof. Pedro Achancaray que las observaciones se exportarían en 11 bases de datos correspondientes a cada mes en cuestión (desde enero hasta noviembre) de manera que cada base acumulará los meses precedentes.
@@ -170,9 +169,13 @@ knitr::include_graphics("capturas/captura1.png")
 ```
 
 En la interfaz del GEOMIDAGRI debemos concentrarnos en dos aspectos:
+
 -   Primero, en el panel de la izquierda deben encontrarse seleccionadas las siguientes casillas:
+
     -   Capas Base: Dep, Cuadrante
+
     -   En la parte de "seleccione el mosaico elegir el mes/año en cuestión.
+
 -   Segundo, en la parte superior se encuentra una barra de búsqueda en la que ingresaremos **La Libertad, Perú**
 
 A continuación, un ejemplo de los pasos mencionados para el mes de noviembre 2021:
@@ -193,16 +196,17 @@ knitr::include_graphics("capturas/captura3.png")
 ```
 
 Una vez realizado click a los dos botones que se han resaltado en verde, se descargarán dos archivos zipeados con una imagen en formato `.tif`, una imagen tendrá la nomenclatura **IR** en su nombre y la otra tendrá **RGB**. Por ejemplo, en el caso anterior, tendríamos dos archivos denominados
+
 -   `PLANET_IR571-981.tif`
+
 -   `PLANET_RGB571-981.tif`
 
-:::{.callout-important collapse=false appearance='default' icon=true}
+::: {.callout-important collapse="false" appearance="default" icon="true"}
 ## Importante
 
 Es necesario que haga unzip a los archivos descargados de modo que se extraiga la imagen que se encuentra dentro de la carpeta zipeada descargada.
 
 Luego de ello, subir las imágenes a la carpeta destino en el drive Qlab en el siguiente [link](https://drive.google.com/drive/folders/15PaOoJwxg5cwouWohJ0zJPDd_3KLpeUP)
-
 :::
 
 Para subir los archivos a la carpeta en el drive Qlab ubicar el mes asignado y dentro de la carpeta imagenes subir a la carpeta IR los archivos con esa nomenclatura y de la misma manera a la carpeta RGB. Por ejemplo, si tuviera una imagen IR (e.g `PLANET_IR571-981.tif`) para el mes octubre seguiría la siguiente ruta:
@@ -212,3 +216,19 @@ Para subir los archivos a la carpeta en el drive Qlab ubicar el mes asignado y d
 knitr::include_graphics("capturas/captura4.png")
 
 ```
+
+### Asignación de meses
+
+| Mes       | Encargados          |
+|-----------|---------------------|
+| Abril     | María Pía           |
+| Mayo      | Santiago            |
+| Junio     | Jimena              |
+| Julio     | Josué               |
+| Agosto    | Antony              |
+| Setiembre | Roberto / Christian |
+| Octubre   | Darla / Jazmín      |
+
+### Deadline
+
+Se espera que se puedan descargar y subir los archivos `.tif` a la carpeta correspondiente para el **sábado 3 al mediodía**.
