@@ -45,7 +45,7 @@ raster_import<- function(file){
 }
 
 myraster4<-
-  fs::dir_ls("la_libertad/imagenes/IR/") %>% 
+  fs::dir_ls("la_libertad/2021-11 noviembre/imagenes/IR/") %>% 
   map(raster_import) %>% 
   reduce(bind_rows) %>% 
   st_as_sf(sf_column_name = "geometry")
@@ -114,10 +114,12 @@ multiplots<-function(num){
     geom_sf_text(data = myraster5, aes(label = name), size = 6) +
     scale_fill_manual(values = c("grey", "seagreen3"), labels = c("No", "Sí")) +
     scale_color_manual(values = "magenta") +
+    ggtitle(glue::glue(as.numeric(table(myraster5$within)[2]), " cuadrantes")) +
     theme_void() + 
     coord_sf(default_crs = sf::st_crs(4326), crs = sf::st_crs(4326)) +
     guides(fill=guide_legend(title="Descargar"), color=guide_legend(title="Polígonos")) +
-    theme(legend.key.size = unit(2, 'cm'), #change legend key size
+    theme(title = element_text(size = 25),
+          legend.key.size = unit(2, 'cm'), #change legend key size
           legend.key.height = unit(2, 'cm'), #change legend key height
           legend.key.width = unit(2, 'cm'), #change legend key width
           legend.title = element_text(size=18), #change legend title font size
