@@ -49,6 +49,67 @@ myraster4<-
   map(raster_import) %>% 
   reduce(bind_rows) %>% 
   st_as_sf(sf_column_name = "geometry")
+  
+myraster_download<-
+  list(
+    # [1]
+    data.frame(name="", geometry=""),
+    
+    # [2]
+    data.frame(name="", geometry=""),
+    
+    # [3]
+    data.frame(name="", geometry=""),
+    
+    # [4]
+    fs::dir_ls("la_libertad/2021-04 abril/imagenes/IR/") %>% 
+    map(raster_import) %>% 
+    reduce(bind_rows) %>% 
+    st_as_sf(sf_column_name = "geometry"),
+    
+    # [5]
+    fs::dir_ls("la_libertad/2021-05 mayo/imagenes/IR/") %>% 
+    map(raster_import) %>% 
+    reduce(bind_rows) %>% 
+    st_as_sf(sf_column_name = "geometry"),
+    
+    # [6]
+    fs::dir_ls("la_libertad/2021-06 junio/imagenes/IR/") %>% 
+    map(raster_import) %>% 
+    reduce(bind_rows) %>% 
+    st_as_sf(sf_column_name = "geometry"),
+    
+    # [7]
+    fs::dir_ls("la_libertad/2021-07 julio/imagenes/IR/") %>% 
+    map(raster_import) %>% 
+    reduce(bind_rows) %>% 
+    st_as_sf(sf_column_name = "geometry"),
+    
+    # [8]
+    fs::dir_ls("la_libertad/2021-08 agosto/imagenes/IR/") %>% 
+    map(raster_import) %>% 
+    reduce(bind_rows) %>% 
+    st_as_sf(sf_column_name = "geometry"),
+    
+    # [9]
+    fs::dir_ls("la_libertad/2021-09 setiembre/imagenes/IR/") %>% 
+    map(raster_import) %>% 
+    reduce(bind_rows) %>% 
+    st_as_sf(sf_column_name = "geometry"),
+    
+    # [10]
+    fs::dir_ls("la_libertad/2021-10 octubre/imagenes/IR/") %>% 
+    map(raster_import) %>% 
+    reduce(bind_rows) %>% 
+    st_as_sf(sf_column_name = "geometry"),
+  
+    # [11]
+    fs::dir_ls("la_libertad/2021-11 noviembre/imagenes/IR/") %>% 
+    map(raster_import) %>% 
+    reduce(bind_rows) %>% 
+    st_as_sf(sf_column_name = "geometry")
+  )
+  
 
 ```
 
@@ -112,13 +173,16 @@ multiplots<-function(num){
             aes(geometry=geometry, color = "Lotes de cultivo"), 
             fill = "magenta", size = 3) +
     geom_sf_text(data = myraster5, aes(label = name), size = 6) +
+    geom_sf_text(data=myraster_download[[num]], aes(geometry=geometry, label = name), color = "blue", size = 6) +
     scale_fill_manual(values = c("grey", "seagreen3"), labels = c("No", "Sí")) +
     scale_color_manual(values = "magenta") +
-    ggtitle(glue::glue(as.numeric(table(myraster5$within)[2]), " cuadrantes")) +
+    labs(title=glue::glue(as.numeric(table(myraster5$within)[2]), " cuadrantes"),
+         subtitle = "Los cuadrantes con letras azules han sido descargados y están en el drive") +
     theme_void() + 
     coord_sf(default_crs = sf::st_crs(4326), crs = sf::st_crs(4326)) +
     guides(fill=guide_legend(title="Descargar"), color=guide_legend(title="Polígonos")) +
-    theme(title = element_text(size = 25),
+    theme(plot.title = element_text(size = 35),
+          plot.subtitle = element_text(size = 35, color="blue"),
           legend.key.size = unit(2, 'cm'), #change legend key size
           legend.key.height = unit(2, 'cm'), #change legend key height
           legend.key.width = unit(2, 'cm'), #change legend key width
@@ -221,15 +285,15 @@ knitr::include_graphics("capturas/captura4.png")
 
 ### Asignación de meses
 
-| Mes       | Encargados          |
-|-----------|---------------------|
-| Abril     | María Pía           |
-| Mayo      | Santiago            |
-| Junio     | Jimena              |
-| Julio     | Josué               |
-| Agosto    | Antony              |
-| Setiembre | Roberto / Christian |
-| Octubre   | Darla / Jazmín      |
+| Mes       | Encargados          | Estatus    |
+|-----------|---------------------|------------|
+| Abril     | María Pía           | Completado |
+| Mayo      | Santiago            | Completado |
+| Junio     | Jimena              | Completado |
+| Julio     | Josué               | Completado |
+| Agosto    | Antony              | Completado |
+| Setiembre | Roberto / Christian | Completado |
+| Octubre   | Darla / Jazmín      | Completado |
 
 ### Deadline
 
