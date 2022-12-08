@@ -155,13 +155,13 @@ Si visualizáramos los lotes de cultivo (en color magenta) en comparación con l
 
 multiplots<-function(num){
   
-  myraster5 <- 
-    myraster4 %>% 
+  myraster5 <-
+    myraster4 %>%
     mutate(
-      within=st_contains(
-        geometry, 
+      within=st_intersects( #st_contains antes, no era la funcion adecuada
+        geometry,
         data_j2_loop[[num]]
-        ) %>% 
+        ) %>%
         lengths > 0
     )
   
@@ -177,7 +177,7 @@ multiplots<-function(num){
     scale_fill_manual(values = c("grey", "seagreen3"), labels = c("No", "Sí")) +
     scale_color_manual(values = "magenta") +
     labs(title=glue::glue(as.numeric(table(myraster5$within)[2]), " cuadrantes"),
-         subtitle = "Los cuadrantes con letras azules han sido descargados y están en el drive") +
+         subtitle = "Los cuadrantes con letras azules han sido descargados y están en el drive en formato IR y RGB.") +
     theme_void() + 
     coord_sf(default_crs = sf::st_crs(4326), crs = sf::st_crs(4326)) +
     guides(fill=guide_legend(title="Descargar"), color=guide_legend(title="Polígonos")) +
@@ -188,9 +188,6 @@ multiplots<-function(num){
           legend.key.width = unit(2, 'cm'), #change legend key width
           legend.title = element_text(size=18), #change legend title font size
           legend.text = element_text(size=16)) #change legend text font size
-  
-  # print(pp)
-  # cat('\n\n')
 }
 
 
