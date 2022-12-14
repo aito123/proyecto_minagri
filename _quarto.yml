@@ -17,6 +17,8 @@ website:
     right:
       - href: index.qmd
         text: "Home"
+      - href: "https://github.com/aito123/proyecto_minagri"
+        text: "Github"
       - text: "Menu"
         menu:
           - text: "1. Exploración base polígonos"
